@@ -1,11 +1,49 @@
 <!doctype html>
 <html>
-<head>
-<title>Form</title>
-</head>
-<body>
-		<p> Test </p>
-		<p> pizza </p>
-		<h1> Breadsticks </h1>
-</body>
-</html>
+
+  <head>
+    <title>PLAreNT</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+  </head>
+  <style>
+    body {
+      background-image: url("sven-brandsma-UIeAPW6JLIM-unsplash.jpg");
+      background-size: 100%;
+    }
+  </style>
+  <body>
+    <!-- need this for the navigation -->
+    <div id="myNav" class="overlay">
+      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+      <div class="overlay-content">
+        <a href="#">Home</a>
+        <a href="#">Search Info</a>
+        <a href="#">Resource Map</a>
+        <a href="#">Contact</a>
+      </div>
+    </div>
+
+    <span style="font-size:50px;cursor:pointer" onclick="openNav()">&#9776</span>
+    <!-- need this for the navigation -->
+    
+    <div class="centeredText">
+      <h1>PLAreNT</h1>
+      <p><strong>some really cool tag line.</strong></p>
+    </div>
+    
+    <!-- need this for the navigation and footer -->
+    <script>
+    function openNav() {
+      document.getElementById("myNav").style.height = "100%";
+    }
+
+    function closeNav() {
+      document.getElementById("myNav").style.height = "0%";
+    }
+    </script>
+         
+    <div class="footer">PLAreNT, 2021. Designed by the Avocados.</div>     
+    <!-- need this for the navigation and footer -->
+    </body>
+    
+    </html>
