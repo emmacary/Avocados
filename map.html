@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+  <head>
+    <title>PLAreNT</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script>
+      let map;
+      const boston = { lat: 42.361145, lng: -71.057083 };
+      function initMap() {
+          map = new google.maps.Map(document.getElementById("map"), {
+              center: boston,
+              zoom: 12,
+          });
+          
+          const marker = new google.maps.Marker({
+              position: boston,
+              map: map,
+          });
+      }
+    </script>
+  </head>
+  
+  <style>
+    #map {
+        height: 75%;
+    }
+
+    /* Optional: Makes the sample page fill the window. */
+    html,
+    body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        background-color: black;
+    }
+  </style>
+  
+  <body>
+    <!-- need this for the navigation -->
+    <div id="myNav" class="overlay">
+      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+      <div class="overlay-content">
+        <a href="index.html">Home</a>
+        <a href="#">Search Info</a>
+        <a href="map.html">Resource Map</a>
+        <a href="#">Contact</a>
+      </div>
+    </div>
+
+    <span style="font-size:50px;cursor:pointer" onclick="openNav()">&#9776</span>
+    <!-- need this for the navigation -->
+    
+    <h2 style="text-align: center">Plarent</h2>
+    <div id="map"></div>
+
+    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBIwzALxUPNbatRBj3Xi1Uhp0fFzwWNBkE&callback=initMap&libraries=&v=weekly"
+      async
+    ></script>
+    
+    <!-- need this for the navigation and footer -->
+    <script>
+        function openNav() {
+          document.getElementById("myNav").style.height = "100%";
+        }
+
+        function closeNav() {
+          document.getElementById("myNav").style.height = "0%";
+        }
+    </script>
+         
+    <div class="footer">PLAreNT, 2021. Designed by the Avocados.</div>     
+    <!-- need this for the navigation and footer -->
+    </body>
+</html>
