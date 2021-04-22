@@ -22,8 +22,24 @@
   </head>
   
   <style>
+    h2 {
+      font-size: 3vw;
+
+    }
+    #flexbox {
+      display: flex;
+    }
     #map {
-        height: 75%;
+      height: 75%;
+      border-radius: 50%;
+      box-shadow: 20px 20px 10px #875632;
+      margin-right: 5%;
+      margin-left: 5%;
+    }
+    .key {
+      flex;
+      margin: 5%;
+      
     }
 
     /* Optional: Makes the sample page fill the window. */
@@ -32,7 +48,9 @@
         height: 100%;
         margin: 0;
         padding: 0;
-        background-color: black;
+    }
+    body {
+        background-color: #ff937a;
     }
   </style>
   
@@ -51,8 +69,16 @@
     <span style="font-size:50px;cursor:pointer" onclick="openNav()">&#9776</span>
     <!-- need this for the navigation -->
     
-    <h2 style="text-align: center">Plarent</h2>
+    <h2 style="text-align: center">Search for Nearby Resources!</h2>
+
+   
     <div id="map"></div>
+    <div id=flexbox>
+        <p class="key"> (red pin image here) = Bought a Plant Here! </p><br>
+        <p class="key"> (green pin image here) = Bought Supplies Here! </p><br>
+        <p class="key"> (blue pin image here) = Saw an Exotic Wild Plant Here! </p><br>
+    </div>
+    <h2> button here to add a marker </h2>
 
     <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
     <script
