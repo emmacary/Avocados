@@ -3,6 +3,7 @@
   <head>
     <title>PLAreNT</title>
     <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <script>
       let map;
@@ -12,19 +13,63 @@
               center: boston,
               zoom: 12,
           });
-          
           const marker = new google.maps.Marker({
               position: boston,
               map: map,
           });
       }
+
+      function Pin(location, store, item, price, notes)
+      {
+        this.location = location;
+        this.store = store;
+        this.item = item;
+        this.price = price;
+        this.notes = notes;
+      }
+
+      function onSubmit(){
+          // if (!validate()){
+          //     return;
+          // }
+          console.log("here");
+
+          if ($('#PlantPurchase').is(":checked")) {
+              var location = $('input[name="location"]').val();
+              var store = $('input[name="store"]').val();
+              var item = $('input[name="plantType"]').val();
+              var price = $('input[name="price"]').val();
+              var notes = $('input[name="notes"]').val();
+          }
+          if ($('#SuppliesPurchase').is(":checked")) {
+              var location = $('input[name="location"]').val();
+              var store = $('input[name="store"]').val();
+              var item = $('input[name="supplyType"]').val();
+              var price = $('input[name="price"]').val();
+              var notes = $('input[name="notes"]').val();
+          }
+          if ($('#WildPlant').is(":checked")) {
+              var location = $('input[name="location"]').val();
+              var store = null;
+              var item = null;
+              var price = null;
+              var notes = $('input[name="wildDescrip"]').val();
+          }
+
+          var pin = new Pin(location, store, item, price, notes);
+          console.log(pin);
+      }
+
     </script>
   </head>
   
+
   <style>
+    h1 {
+      font-size: 3vw;
+    }
     h2 {
       font-size: 3vw;
-
     }
     #flexbox {
       display: flex;
@@ -38,10 +83,15 @@
     }
     .key {
       flex;
-      margin: 5%;
-      
+      margin: 5%; 
     }
-
+    .imageBox {
+      display: flex;
+    }
+    .img {
+      flex: 50%;
+      width: 4%;
+    }
     /* Optional: Makes the sample page fill the window. */
     html,
     body {
@@ -52,8 +102,21 @@
     body {
         background-color: #ff937a;
     }
+    form {
+        margin: 5%;
+        font-size: 2vw;
+    }
+    div.footer {
+       position:relative;
+       bottom:0;
+       width:100%;
+       height:60px;   /* Height of the footer */
+       text-align: center;
+       color: #fff;
+    }
   </style>
   
+
   <body>
     <!-- need this for the navigation -->
     <div id="myNav" class="overlay">
@@ -65,20 +128,95 @@
         <a href="#">Contact</a>
       </div>
     </div>
-
     <span style="font-size:50px;cursor:pointer" onclick="openNav()">&#9776</span>
     <!-- need this for the navigation -->
     
-    <h2 style="text-align: center">Search for Nearby Resources!</h2>
 
-   
+    <h1 style="text-align: center">Search for Nearby Resources!</h1>
     <div id="map"></div>
     <div id=flexbox>
         <p class="key"> (red pin image here) = Bought a Plant Here! </p><br>
         <p class="key"> (green pin image here) = Bought Supplies Here! </p><br>
         <p class="key"> (blue pin image here) = Saw an Exotic Wild Plant Here! </p><br>
     </div>
-    <h2> button here to add a marker </h2>
+
+
+    <div class="imageBox">
+        <img src="pstore.JPG" class="img">
+        <img src="planting.JPG" class="img">
+    </div>
+
+
+    <div class="formBox">
+        <h2> Want to place a pin on the map? </h2>
+        <form>
+          <p> Choose a type of pin to continue </p>
+          <input type="radio"  name="type" value="PlantPurchase" id="PlantPurchase"/>I puchased a great plant
+          <input type="radio"  name='type' value="SuppliesPurchase" id="SuppliesPurchase"/>I purchased great supplies
+          <input type="radio"  name='type' value="WildPlant" id="WildPlant"/>I saw an interesting wild plant
+          <p id="location">Location: <input type="text"  name='location' /></p>
+          <p id="store">Store Name: <input type="text"  name='store' /></p>
+          <p id="plantType">Plant Type: <input type="text"  name='plantType' /></p>
+          <p id="supplyItem">Supply Item: <input type="text"  name='supplyItem' /></p>
+          <p id="price">Price: <input type="text"  name='price' /></p>
+          <p id="notes">Notes: <input type="text"  name='notes' /></p>
+          <p id="wildDescrip">Description: <input type="text"  name='wildDescrip' /></p>
+          <input id="submit" type = "button" value = "Submit" onclick="onSubmit()"/>
+        </form>
+    </div>
+
+    <script>
+      //Hides the street and city paragraphs to begin with
+      $("#location").hide();
+      $("#store").hide();
+      $("#plantType").hide();
+      $("#supplyItem").hide();
+      $("#price").hide();
+      $("#notes").hide();
+      $("#wildDescrip").hide();
+      $("#submit").hide();
+
+      //Shows items based on check
+      $('input[name="type"]:eq(0)').click(function(){
+            $("#location").show();
+            $("#store").show();
+            $("#plantType").show();
+            $("#price").show();
+            $("#notes").show();
+            $("#submit").show();
+
+            $("#supplyItem").hide();
+            $("#wildDescrip").hide();
+            window.scroll(0,2000);
+      });
+
+      $('input[name="type"]:eq(1)').click(function(){
+            $("#location").show();
+            $("#store").show();
+            $("#supplyItem").show();
+            $("#price").show();
+            $("#notes").show();
+            $("#submit").show();
+
+            $("#plantType").hide();
+            $("#wildDescrip").hide();
+            window.scroll(0,2000);
+      });
+
+      $('input[name="type"]:eq(2)').click(function(){
+            $("#location").show();
+            $("#wildDescrip").show();
+            $("#submit").show();
+
+            $("#store").hide();
+            $("#plantType").hide();
+            $("#supplyItem").hide();
+            $("#price").hide();
+            $("#notes").hide();
+            window.scroll(0,2000);
+      });
+
+    </script>
 
     <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
     <script
