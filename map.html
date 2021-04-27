@@ -1,241 +1,299 @@
 <!doctype html>
 <html>
-  <head>
-    <title>PLAreNT</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-    <script>
-      let map;
-      const boston = { lat: 42.361145, lng: -71.057083 };
-      function initMap() {
-          map = new google.maps.Map(document.getElementById("map"), {
-              center: boston,
-              zoom: 12,
-          });
-          const marker = new google.maps.Marker({
-              position: boston,
-              map: map,
-          });
-      }
+<head>
+<title>PLAreNT</title>
+<link rel="stylesheet" type="text/css" href="style.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+<style>
+		h1 {
+			font-size: 3vw;
+		}
+		h2 {
+			font-size: 3vw;
+			padding-top: 6%;
+		}
+		#flexbox {
+			display: flex;
+		}
+		#map {
+			height: 75%;
+			border-radius: 50%;
+			box-shadow: 20px 20px 10px #875632;
+			margin-right: 5%;
+			margin-left: 5%;
+		}
+		.key {
+			flex;
+			margin: 5%; 
+		}
+		.imageBox {
+			display: flex;
+		}
+		.img {
+			flex: 50%;
+			width: 4%;
+		}
+		#choices {
+			display: flex;
+		}
+		#ppur, #spur, #wfind {
+			padding: 3%;
+		}
+		.plantBox {
+			margin: 5%;
+			margin-top: 0%;
+			padding: 6%;
+			padding-top: 10%;
+			background-image: url(pot.png);
+			background-repeat: no-repeat;
+			background-size: contain;
+			background-position: center;
+		}
+		input[type="text"] {
+			width: 20%;
+		}
+		/* Optional: Makes the sample page fill the window. */
+		html,
+		body {
+			height: 100%;
+			margin: 0;
+			padding: 0;
+		}
+		body {
+			background-color: #ff937a;
+		}
+		form {
+			margin: 3%;
+			font-size: 2vw;
+			padding-top: 0%;
+		}
+		div.footer {
+			position:relative;
+			bottom:0;
+			width:100%;
+			height:60px;   /* Height of the footer */
+			text-align: center;
+			color: #fff;
+		}
+</style>
 
-      function Pin(location, store, item, price, notes)
-      {
-        this.location = location;
-        this.store = store;
-        this.item = item;
-        this.price = price;
-        this.notes = notes;
-      }
+<script>
+	//Creates the map with API
+	let map;
+	const boston = { lat: 42.361145, lng: -71.057083 };
+	function initMap() {
+		map = new google.maps.Map(document.getElementById("map"), {
+			center: boston,
+			zoom: 12,
+		});
+		const marker = new google.maps.Marker({
+			position: boston,
+			map: map,
+		});
+	}
 
-      function onSubmit(){
-          // if (!validate()){
-          //     return;
-          // }
-          console.log("here");
+	//Object for pins
+	function Pin(type, latitude, longitude, store, item, price, notes)
+	{
+		this.type = type;
+		this.latitude = latitude;
+		this.longitude = longitude;
+		this.store = store;
+		this.item = item;
+		this.price = price;
+		this.notes = notes;
+	}
 
-          if ($('#PlantPurchase').is(":checked")) {
-              var location = $('input[name="location"]').val();
-              var store = $('input[name="store"]').val();
-              var item = $('input[name="plantType"]').val();
-              var price = $('input[name="price"]').val();
-              var notes = $('input[name="notes"]').val();
-          }
-          if ($('#SuppliesPurchase').is(":checked")) {
-              var location = $('input[name="location"]').val();
-              var store = $('input[name="store"]').val();
-              var item = $('input[name="supplyType"]').val();
-              var price = $('input[name="price"]').val();
-              var notes = $('input[name="notes"]').val();
-          }
-          if ($('#WildPlant').is(":checked")) {
-              var location = $('input[name="location"]').val();
-              var store = null;
-              var item = null;
-              var price = null;
-              var notes = $('input[name="wildDescrip"]').val();
-          }
+	function onSubmit(){
+		// if (!validate()){
+		//     return;
+		// }
 
-          var pin = new Pin(location, store, item, price, notes);
-          console.log(pin);
-      }
+		//Get variables
+		var streetNum = $('input[name="streetNum"]').val();
+		var street = $('input[name="street"]').val();
+		var city = $('input[name="city"]').val();
+		var state = $('input[name="state"]').val();
+		var country = $('input[name="country"]').val();
 
-    </script>
-  </head>
-  
+		var store = $('input[name="store"]').val();
+		var item = $('input[name="plantType"]').val();
+		var price = $('input[name="price"]').val();
+		var notes = $('input[name="notes"]').val();
 
-  <style>
-    h1 {
-      font-size: 3vw;
+		//Make string for geocode API
+		var address = streetNum + "%" + street + "%" + city + "%" + state + "%" + country;
+
+		//Asign type of pin based on radio check
+		if ($('#PlantPurchase').is(":checked")) {
+			var type = "plant";
+		}
+		if ($('#SuppliesPurchase').is(":checked")) {
+			var type = "supply";
+		}
+		if ($('#WildPlant').is(":checked")) {
+			var type = "wild";
+			var notes = $('input[name="wildDescrip"]').val();
+		}
+
+		//Convert location to latitude and longitude variables
+		//XMLHTTPRequest
+		var latitude;
+		var longitude;
+    var req = new XMLHttpRequest();
+    //When the readystate changes
+    req.onreadystatechange = function() {
+    	//If its succesful
+        if (this.readyState == 4 && this.status == 200) {
+            strObj = JSON.stringify(this.responseText);
+            parseObj = JSON.parse(this.responseText);
+            latitude = parseObj.results[0].geometry.location.lat;
+            longitude = parseObj.results[0].geometry.location.lng;
+
+            //Create a new object with the variables
+						var pin = new Pin(type, latitude, longitude, store, item, price, notes);
+				    console.log(pin);
+						
+						//Insert into database
+						
+						//Reload page (make a document.onReady function to display all markers when page is loaded)
+
+        }    
     }
-    h2 {
-      font-size: 3vw;
-    }
-    #flexbox {
-      display: flex;
-    }
-    #map {
-      height: 75%;
-      border-radius: 50%;
-      box-shadow: 20px 20px 10px #875632;
-      margin-right: 5%;
-      margin-left: 5%;
-    }
-    .key {
-      flex;
-      margin: 5%; 
-    }
-    .imageBox {
-      display: flex;
-    }
-    .img {
-      flex: 50%;
-      width: 4%;
-    }
-    /* Optional: Makes the sample page fill the window. */
-    html,
-    body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-    }
-    body {
-        background-color: #ff937a;
-    }
-    form {
-        margin: 5%;
-        font-size: 2vw;
-    }
-    div.footer {
-       position:relative;
-       bottom:0;
-       width:100%;
-       height:60px;   /* Height of the footer */
-       text-align: center;
-       color: #fff;
-    }
-  </style>
-  
+    //Create and send request
+    req.open("GET", "https://maps.googleapis.com/maps/api/geocode/json?address=" + address + "&key=AIzaSyDbHeyWVPYGmWmoF4uv2E5tVaMQeCZ86cA", true);
+    req.send();
+	}
 
-  <body>
-    <!-- need this for the navigation -->
-    <div id="myNav" class="overlay">
-      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-      <div class="overlay-content">
-        <a href="index.html">Home</a>
-        <a href="#">Search Info</a>
-        <a href="map.html">Resource Map</a>
-        <a href="#">Contact</a>
-      </div>
-    </div>
-    <span style="font-size:50px;cursor:pointer" onclick="openNav()">&#9776</span>
-    <!-- need this for the navigation -->
-    
+	
+</script>
 
-    <h1 style="text-align: center">Search for Nearby Resources!</h1>
-    <div id="map"></div>
-    <div id=flexbox>
-        <p class="key"> (red pin image here) = Bought a Plant Here! </p><br>
-        <p class="key"> (green pin image here) = Bought Supplies Here! </p><br>
-        <p class="key"> (blue pin image here) = Saw an Exotic Wild Plant Here! </p><br>
-    </div>
+</head>
 
+<body>
+	<!-- need this for the navigation -->
+	<div id="myNav" class="overlay">
+		<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+		<div class="overlay-content">
+			<a href="index.html">Home</a>
+			<a href="#">Search Info</a>
+			<a href="map.html">Resource Map</a>
+			<a href="#">Contact</a>
+		</div>
+	</div>
+	<span style="font-size:50px;cursor:pointer" onclick="openNav()">&#9776</span>
+	<!-- need this for the navigation -->
 
-    <div class="imageBox">
-        <img src="pstore.JPG" class="img">
-        <img src="planting.JPG" class="img">
-    </div>
+	<h1 style="text-align: center">Search for Nearby Resources!</h1>
+	<div id="map"></div>
+	<div id=flexbox>
+		<p class="key"> (red pin image here) = Bought a Plant Here! </p><br>
+		<p class="key"> (green pin image here) = Bought Supplies Here! </p><br>
+		<p class="key"> (blue pin image here) = Saw an Exotic Wild Plant Here! </p><br>
+	</div>
 
+	<div class="imageBox">
+		<img src="pstore.JPG" class="img">
+		<img src="planting.JPG" class="img">
+	</div>
 
-    <div class="formBox">
-        <h2> Want to place a pin on the map? </h2>
-        <form>
-          <p> Choose a type of pin to continue </p>
-          <input type="radio"  name="type" value="PlantPurchase" id="PlantPurchase"/>I puchased a great plant
-          <input type="radio"  name='type' value="SuppliesPurchase" id="SuppliesPurchase"/>I purchased great supplies
-          <input type="radio"  name='type' value="WildPlant" id="WildPlant"/>I saw an interesting wild plant
-          <p id="location">Location: <input type="text"  name='location' /></p>
-          <p id="store">Store Name: <input type="text"  name='store' /></p>
-          <p id="plantType">Plant Type: <input type="text"  name='plantType' /></p>
-          <p id="supplyItem">Supply Item: <input type="text"  name='supplyItem' /></p>
-          <p id="price">Price: <input type="text"  name='price' /></p>
-          <p id="notes">Notes: <input type="text"  name='notes' /></p>
-          <p id="wildDescrip">Description: <input type="text"  name='wildDescrip' /></p>
-          <input id="submit" type = "button" value = "Submit" onclick="onSubmit()"/>
-        </form>
-    </div>
+	<div class="formBox">
+		<h2> Want to place a pin on the map? </h2>
+		<form>
+			<p> Choose a type of pin to continue </p>
+			<div id="choices">
+				<div id="ppur"><input type="radio"  name="type" value="PlantPurchase" id="PlantPurchase" checked="checked"/>I puchased a great plant</div>
+				<div id="spur"><input type="radio"  name='type' value="SuppliesPurchase" id="SuppliesPurchase"/>I purchased great supplies</div>
+				<div id="wfind"><input type="radio"  name='type' value="WildPlant" id="WildPlant"/>I saw an interesting wild plant</div>
+			</div>
+			<div class="plantBox">
+				<p> Location </p>
+				<p id="streetNum">Street Number: <input type="text"  name='streetNum' /></p>
+				<p id="street">Street: <input type="text"  name='street' /></p>
+				<p id="city">City: <input type="text"  name='city' /></p>
+				<p id="state">State: <input type="text"  name='state' /></p>
+				<p id="country">Country: <input type="text"  name='country' /></p>
+				<br><p> Information </p>
+				<p id="store">Store Name: <input type="text"  name='store' /></p>
+				<p id="plantType">Plant Type: <input type="text"  name='plantType' /></p>
+				<p id="supplyItem">Supply Item: <input type="text"  name='supplyItem' /></p>
+				<p id="price">Price: <input type="text"  name='price' /></p>
+				<p id="notes">Notes: <input type="text"  name='notes' /></p>
+				<p id="wildDescrip">Description: <input type="text"  name='wildDescrip' /></p>
+				<input id="submit" type = "button" value = "Submit" onclick="onSubmit()"/>
+			</div>
+		</form>
+	</div>
 
-    <script>
-      //Hides the street and city paragraphs to begin with
-      $("#location").hide();
-      $("#store").hide();
-      $("#plantType").hide();
-      $("#supplyItem").hide();
-      $("#price").hide();
-      $("#notes").hide();
-      $("#wildDescrip").hide();
-      $("#submit").hide();
+	<script>
+		//Hides the street and city paragraphs to begin with
+		$("#location").show();
+			$("#store").show();
+			$("#plantType").show();
+			$("#price").show();
+			$("#notes").show();
+			$("#submit").show();
 
-      //Shows items based on check
-      $('input[name="type"]:eq(0)').click(function(){
-            $("#location").show();
-            $("#store").show();
-            $("#plantType").show();
-            $("#price").show();
-            $("#notes").show();
-            $("#submit").show();
+			$("#supplyItem").hide();
+			$("#wildDescrip").hide();
 
-            $("#supplyItem").hide();
-            $("#wildDescrip").hide();
-            window.scroll(0,2000);
-      });
+		//Shows items based on check
+		$('input[name="type"]:eq(0)').click(function() {
+			$("#location").show();
+			$("#store").show();
+			$("#plantType").show();
+			$("#price").show();
+			$("#notes").show();
+			$("#submit").show();
 
-      $('input[name="type"]:eq(1)').click(function(){
-            $("#location").show();
-            $("#store").show();
-            $("#supplyItem").show();
-            $("#price").show();
-            $("#notes").show();
-            $("#submit").show();
+			$("#supplyItem").hide();
+			$("#wildDescrip").hide();
+		});
 
-            $("#plantType").hide();
-            $("#wildDescrip").hide();
-            window.scroll(0,2000);
-      });
+		$('input[name="type"]:eq(1)').click(function(){
+			$("#location").show();
+			$("#store").show();
+			$("#supplyItem").show();
+			$("#price").show();
+			$("#notes").show();
+			$("#submit").show();
 
-      $('input[name="type"]:eq(2)').click(function(){
-            $("#location").show();
-            $("#wildDescrip").show();
-            $("#submit").show();
+			$("#plantType").hide();
+			$("#wildDescrip").hide();
+		});
 
-            $("#store").hide();
-            $("#plantType").hide();
-            $("#supplyItem").hide();
-            $("#price").hide();
-            $("#notes").hide();
-            window.scroll(0,2000);
-      });
+		$('input[name="type"]:eq(2)').click(function(){
+			$("#location").show();
+			$("#wildDescrip").show();
+			$("#submit").show();
 
-    </script>
+			$("#store").hide();
+			$("#plantType").hide();
+			$("#supplyItem").hide();
+			$("#price").hide();
+			$("#notes").hide();
+		});
 
-    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
-    <script
+	</script>
+
+	<!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+	<script
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDbHeyWVPYGmWmoF4uv2E5tVaMQeCZ86cA&callback=initMap&libraries=&v=weekly"
       async
-    ></script>
-    
-    <!-- need this for the navigation and footer -->
-    <script>
-        function openNav() {
-          document.getElementById("myNav").style.height = "100%";
-        }
+  ></script>
 
-        function closeNav() {
-          document.getElementById("myNav").style.height = "0%";
-        }
-    </script>
-         
-    <div class="footer">PLAreNT, 2021. Designed by the Avocados.</div>     
-    <!-- need this for the navigation and footer -->
-    </body>
+	<!-- need this for the navigation and footer -->
+	<script>
+		function openNav() {
+			document.getElementById("myNav").style.height = "100%";
+		}
+		function closeNav() {
+			document.getElementById("myNav").style.height = "0%";
+		}
+	</script>
+	<div class="footer">PLAreNT, 2021. Designed by the Avocados.</div>     
+	<!-- need this for the navigation and footer -->
+
+</body>
 </html>
