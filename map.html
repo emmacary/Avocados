@@ -81,7 +81,7 @@
 <script>
 	//Creates the map with API
 	let map;
-	const boston = { lat: 42.361145, lng: -71.057083 };
+	const boston = { lat: 42.3602534, lng: -71.0582912 };
 	function initMap() {
 		map = new google.maps.Map(document.getElementById("map"), {
 			center: boston,
@@ -91,6 +91,29 @@
 			position: boston,
 			map: map,
 		});
+	}
+	getLocation();
+
+	//Resets the center of the map to be user's location
+	var pos;
+	function getLocation() {
+	 if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const pos = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          };
+          map.setCenter(pos);
+        },
+        () => {
+          handleLocationError(true, infoWindow, map.getCenter());
+        }
+      );
+    } else {
+      // Browser doesn't support Geolocation
+      handleLocationError(false, infoWindow, map.getCenter());
+    }
 	}
 
 	//Object for pins
@@ -166,7 +189,7 @@
     req.send();
 	}
 
-	
+
 </script>
 
 </head>
