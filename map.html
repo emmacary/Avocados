@@ -94,7 +94,7 @@
 	}
 	getLocation();
 
-	//Resets the center of the map to be user's location
+	// Resets the center of the map to be user's location
 	var pos;
 	function getLocation() {
 	 if (navigator.geolocation) {
@@ -148,7 +148,7 @@
 		//Make string for geocode API
 		var address = streetNum + "%" + street + "%" + city + "%" + state + "%" + country;
 
-		//Asign type of pin based on radio check
+		//Assign type of pin based on radio check
 		if ($('#PlantPurchase').is(":checked")) {
 			var type = "plant";
 		}
@@ -164,29 +164,29 @@
 		//XMLHTTPRequest
 		var latitude;
 		var longitude;
-    var req = new XMLHttpRequest();
-    //When the readystate changes
-    req.onreadystatechange = function() {
-    	//If its succesful
-        if (this.readyState == 4 && this.status == 200) {
-            strObj = JSON.stringify(this.responseText);
-            parseObj = JSON.parse(this.responseText);
-            latitude = parseObj.results[0].geometry.location.lat;
-            longitude = parseObj.results[0].geometry.location.lng;
+        var req = new XMLHttpRequest();
+        //When the readystate changes
+        req.onreadystatechange = function() {
+        	//If its succesful
+            if (this.readyState == 4 && this.status == 200) {
+                strObj = JSON.stringify(this.responseText);
+                parseObj = JSON.parse(this.responseText);
+                latitude = parseObj.results[0].geometry.location.lat;
+                longitude = parseObj.results[0].geometry.location.lng;
 
-            //Create a new object with the variables
-						var pin = new Pin(type, latitude, longitude, store, item, price, notes);
-				    console.log(pin);
-						
-						//Insert into database
-						
-						//Reload page (make a document.onReady function to display all markers when page is loaded)
+                //Create a new object with the variables
+    			var pin = new Pin(type, latitude, longitude, store, item, price, notes);
+    			console.log("SDf", pin);
+    						
+				//Insert into database
+				
+				//Reload page (make a document.onReady function to display all markers when page is loaded)
 
-        }    
-    }
-    //Create and send request
-    req.open("GET", "https://maps.googleapis.com/maps/api/geocode/json?address=" + address + "&key=AIzaSyDbHeyWVPYGmWmoF4uv2E5tVaMQeCZ86cA", true);
-    req.send();
+            }    
+        }
+        //Create and send request
+        req.open("GET", "https://maps.googleapis.com/maps/api/geocode/json?address=" + address + "&key=AIzaSyDbHeyWVPYGmWmoF4uv2E5tVaMQeCZ86cA", true);
+        req.send();
 	}
 
 
@@ -223,7 +223,7 @@
 
 	<div class="formBox">
 		<h2> Want to place a pin on the map? </h2>
-		<form>
+		<form method='post' action='http://localhost:8080/map.html/process'>
 			<p> Choose a type of pin to continue </p>
 			<div id="choices">
 				<div id="ppur"><input type="radio"  name="type" value="PlantPurchase" id="PlantPurchase" checked="checked"/>I puchased a great plant</div>
@@ -244,7 +244,7 @@
 				<p id="price">Price: <input type="text"  name='price' /></p>
 				<p id="notes">Notes: <input type="text"  name='notes' /></p>
 				<p id="wildDescrip">Description: <input type="text"  name='wildDescrip' /></p>
-				<input id="submit" type = "button" value = "Submit" onclick="onSubmit()"/>
+				<input type="submit" id="submit" type = "button" value = "Submit" onclick="onSubmit()"/>
 			</div>
 		</form>
 	</div>
