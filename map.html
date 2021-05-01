@@ -40,18 +40,44 @@
 		#ppur, #spur, #wfind {
 			padding: 3%;
 		}
+		#submit {
+			margin-top: 2%;
+			text-align: center !important;
+		}
 		.plantBox {
 			margin: 5%;
 			margin-top: 0%;
-			padding: 6%;
-			padding-top: 10%;
+			padding-bottom: 10%;
+			padding-top: 13%;
 			background-image: url(pot.png);
 			background-repeat: no-repeat;
 			background-size: contain;
 			background-position: center;
+			color: #58615a
 		}
-		input[type="text"] {
-			width: 20%;
+		.topbox {
+			text-align: left;
+			padding-left: 33%;
+			padding-right: 33%;
+		}
+		.bottombox {
+			text-align: left;
+			padding-left: 34%;
+			padding-right: 34%;
+		}
+		form {
+			margin: 3%;
+			font-size: 2vw;
+			padding-top: 0%;
+		}
+		input[type="text"], textarea {
+			float: right;
+			padding: 1%;
+			width: 300px;
+			border-radius: 4px;
+		}
+		input[type=submit]:hover {
+		  background-color: #93b8a0;
 		}
 		/* Optional: Makes the sample page fill the window. */
 		html,
@@ -63,10 +89,8 @@
 		body {
 			background-color: #ff937a;
 		}
-		form {
-			margin: 3%;
-			font-size: 2vw;
-			padding-top: 0%;
+		.content {
+			color: black;
 		}
 		div.footer {
 			position:relative;
@@ -78,19 +102,85 @@
 		}
 </style>
 
-<script>
-	//Creates the map with API
+<script>	
+	//Object for pins
+	function Pin(type, latitude, longitude, store, item, price, notes)
+	{
+		this.type = type;
+		this.latitude = latitude;
+		this.longitude = longitude;
+		this.store = store;
+		this.item = item;
+		this.price = price;
+		this.notes = notes;
+	}
+
+	//Create an array of pin objects from database
+		//This is temporary hardcoding an array for testing:
+	var pins = [];
+	var niche = new Pin("plant", 42.4085175, -71.1122302, "niche", "daisy", "$12", "great");
+	var boston = new Pin("supply", 42.3602534, -71.0582912, "btown", "city", "$300");
+	var wild = new Pin("wild", 42.395819, -71.1222902, "niche", "daisy", "$12", "red and blue");
+	pins.push(niche);
+	pins.push(boston);
+	pins.push(wild);
+
+
+	//Creates the map centered at Boston unless user allows location
 	let map;
-	const boston = { lat: 42.3602534, lng: -71.0582912 };
+	const boston1 = { lat: 42.3602534, lng: -71.0582912 };
 	function initMap() {
 		map = new google.maps.Map(document.getElementById("map"), {
-			center: boston,
+			center: boston1,
 			zoom: 12,
 		});
 		const marker = new google.maps.Marker({
-			position: boston,
+			position: boston1,
 			map: map,
 		});
+	
+		//Creates a marker and an info-window for each marker
+		for (var i=0; i < pins.length; i++) {
+			const location = {lat : pins[i].latitude, lng: pins[i].longitude};
+			const marker = new google.maps.Marker({
+				position: location,
+				map: map,
+			});
+
+			if (pins[i].notes == undefined){pins[i].notes = "No notes here!";}
+
+			var contentString = '';
+			if (pins[i].type == "plant" || pins[i].type == "supply") {
+				contentString =
+			    '<div class="content">' +
+			    '<div id="siteNotice">' +
+			    "</div>" +
+				    '<h1 id="firstHeading" class="firstHeading">' + pins[i].store + '</h1>' +
+				    '<div id="bodyContent">' +
+				    "<p> Item Puchased: " + pins[i].item + "</p>" +
+				    "<p> Price: " + pins[i].price + "</p>" +
+				    "<p> Notes: " + pins[i].notes + "</p>"+
+			    "</div>" +
+			    "</div>";
+			}
+			if (pins[i].type == "wild") {
+				contentString =
+			    '<div class="content">' +
+			    '<div id="siteNotice">' +
+			    "</div>" +
+				    '<h1 id="firstHeading" class="firstHeading">' + "Wild Plant Found!" + '</h1>' +
+				    '<div id="bodyContent">' +
+				    "<p> Description: " + pins[i].notes + "</p>"+
+			    "</div>" +
+			    "</div>";
+			}
+		  const infowindow = new google.maps.InfoWindow({
+		    content: contentString,
+		  });
+			marker.addListener("click", () => {
+		    infowindow.open(map, marker);
+		  });
+		}
 	}
 	getLocation();
 
@@ -114,18 +204,6 @@
       // Browser doesn't support Geolocation
       handleLocationError(false, infoWindow, map.getCenter());
     }
-	}
-
-	//Object for pins
-	function Pin(type, latitude, longitude, store, item, price, notes)
-	{
-		this.type = type;
-		this.latitude = latitude;
-		this.longitude = longitude;
-		this.store = store;
-		this.item = item;
-		this.price = price;
-		this.notes = notes;
 	}
 
 	function onSubmit(){
@@ -231,19 +309,23 @@
 				<div id="wfind"><input type="radio"  name='type' value="WildPlant" id="WildPlant"/>I saw an interesting wild plant</div>
 			</div>
 			<div class="plantBox">
-				<p> Location </p>
-				<p id="streetNum">Street Number: <input type="text"  name='streetNum' /></p>
-				<p id="street">Street: <input type="text"  name='street' /></p>
-				<p id="city">City: <input type="text"  name='city' /></p>
-				<p id="state">State: <input type="text"  name='state' /></p>
-				<p id="country">Country: <input type="text"  name='country' /></p>
-				<br><p> Information </p>
-				<p id="store">Store Name: <input type="text"  name='store' /></p>
-				<p id="plantType">Plant Type: <input type="text"  name='plantType' /></p>
-				<p id="supplyItem">Supply Item: <input type="text"  name='supplyItem' /></p>
-				<p id="price">Price: <input type="text"  name='price' /></p>
-				<p id="notes">Notes: <input type="text"  name='notes' /></p>
-				<p id="wildDescrip">Description: <input type="text"  name='wildDescrip' /></p>
+				<div class="topbox">
+					<p style="color:#fff; text-align: center; font-size: 120%;"> Location </p>
+					<p id="streetNum"><label>Street Number: </label><input placeholder="ex... 259" type="text"  name='streetNum' /></p>
+					<p id="street"><label>Street: </label><input placeholder="ex... Elm St" type="text"  name='street' /></p>
+					<p id="city"><label>City: </label><input placeholder="ex... Somerville" type="text"  name='city' /></p>
+					<p id="state"><label>State: </label><input placeholder="ex... Massachusetts" type="text"  name='state' /></p>
+					<p id="country"><label>Country: </label><input placeholder="ex... USA" type="text"  name='country' /></p>
+				</div>
+				<div class="bottombox">
+					<br><p style="color:#fff; text-align: center; font-size: 120%;"> Information </p>
+					<p id="store"><label>Store Name: </label><input placeholder="ex... Niche" type="text"  name='store' /></p>
+					<p id="plantType"><label>Plant Type: </label><input placeholder="ex... Bamboo" type="text"  name='plantType' /></p>
+					<p id="supplyItem"><label>Supply Item: </label><input placeholder="ex... soil" type="text"  name='supplyItem' /></p>
+					<p id="price"><label>Price: </label><input placeholder="ex... $12" type="text"  name='price' /></p>
+					<p id="notes"><label>Notes: </label><textarea placeholder="ex... Great condition, friendly service!" id="notesText" type="text"  name='notes' /></textarea></p>
+					<p id="wildDescrip">Description: <textarea type="text"  name='wildDescrip' /></textarea></p>
+				</div><br>
 				<input type="submit" id="submit" type = "button" value = "Submit" onclick="onSubmit()"/>
 			</div>
 		</form>
