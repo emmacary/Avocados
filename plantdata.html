@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <title>PLAreNT</title>
+    <link rel="shortcut icon" type="image/jpg" href="Logo.png"/>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <style>
+      h1 {
+        font-size: 3vw;
+        text-align: center;
+        display: inline-block;
+      }
+      h2 {
+        font-size: 3vw;
+        padding-top: 3%;
+      }
+      body {
+  			background-color: #ffa185;
+  		}
+    </style>
+  </head>
+  
+  <body>
+    <!-- navigation -->
+    <a href="index.html" class="logoLink"><img src="Logo.png" class="logo"/></a>
+    <div id="myNav" class="overlay">
+      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+      <div class="overlay-content">
+        <a href="index.html">Home</a>
+  			<a href="plantdata.html">Search Info</a>
+  			<a href="map.html">Resource Map</a>
+  			<a href="contact.html">Contact</a>
+      </div>
+    </div>
+    <span style="font-size:50px;cursor:pointer" onclick="openNav()">&#9776</span>
+    <!-- navigation -->
+             
+
+    <div class="content">
+    <h1> Search Info</h1>
+    <h2> Search the database! </h2>
+    <br /><br />
+    
+    <form method="post" action="http://localhost:8080/plantdata.html/search">
+      Input a plant name here: <input type="text" name="query" id="text"/>
+      <br /><br />
+      <input type="submit" value="Submit"/>
+    </form>
+    
+    <br /><br />
+    <h2> Add your own knowledge! </h2>
+    We highly recommend filling in all fields, but especially the name field.
+    Failure to do so will prevent other users from finding the data you added.
+    <br /><br />
+    
+    <form method="post" action="http://localhost:8080/plantdata.html/insert">
+      
+      Plant Name <input type="text" name="name" id="name"/>
+      <br /><br />
+      
+      Water Frequency <input type="text" name="water" id="water"/>
+      <br /><br />
+      
+      Sunlight <input type="text" name="sunlight" id="sunlight"/>
+      <br /><br />
+      
+      Difficulty <input type="text" name="diff" id="diff"/>
+      <br /><br />
+      
+      Comments <input type="text" name="comments" id="comments"/> 
+      <br /><br />
+      
+      <input type="submit" value="Submit"/>
+    </form>
+    </div>
+      
+    <!-- need this for the navigation and footer -->
+    <script language="javascript">
+    function openNav() {
+      document.getElementById("myNav").style.height = "100%";
+    }
+
+    function closeNav() {
+      document.getElementById("myNav").style.height = "0%";
+    }
+    </script>  
+    <!-- need this for the navigation and footer (deleted footer lol whoops)-->
+  </body>
+  
+</html>
