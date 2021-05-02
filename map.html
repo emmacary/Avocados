@@ -134,7 +134,7 @@
 
 
 	//Creates the map centered at Boston unless user allows location
-	let map;
+	var map;
 	const boston1 = { lat: 42.3602534, lng: -71.0582912 };
 	function initMap() {
 		map = new google.maps.Map(document.getElementById("map"), {
@@ -201,7 +201,6 @@
             lat: position.coords.latitude,
             lng: position.coords.longitude,
           };
-          console.log(pos);
           map.setCenter(pos);
         },
         () => {
