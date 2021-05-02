@@ -1,0 +1,126 @@
+<!doctype html>
+<html>
+<head>
+<title>PLAreNT</title>
+<link rel="stylesheet" type="text/css" href="style.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+<style>
+	body {
+		background-image: url(contactback.png);
+		background-size: 100vh;
+		background-repeat: no-repeat;
+     	background-position: right top;
+     	background-color: #ffa185;
+	}
+    h2 {
+        font-size: 20px;
+    }
+    .content {
+    	padding-left: 10%;
+    	float: left;
+    }
+    .resizedTextbox {
+        height:200px;
+        width:500px;
+        font-size:14pt;
+    }
+    .Bcolor{
+        background-color:rgb(217, 217, 217);
+        padding: 20px 30px;
+        border-radius: 10%
+    }
+    .contactinfo{
+        font-size: 200%;
+    }
+    input[type="text"], textarea {
+			padding: 1%;
+			width: 300px;
+			border-radius: 4px;
+	}
+    #opener {
+		margin-top: 2%;
+		text-align: center !important;
+		background-color: #76c287;
+		border-radius: 10%;
+		color: white;
+		padding: 16px 32px;
+		margin: 4px 2px;
+		cursor: pointer;
+	}
+	#opener:hover {
+		  background-color: #a8baac;
+	}
+</style>
+
+</style>
+</head>
+<body>
+	<!-- need this for the navigation -->
+	<div id="myNav" class="overlay">
+		<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+		<div class="overlay-content">
+			<a href="index.html">Home</a>
+			<a href="#">Search Info</a>
+			<a href="map.html">Resource Map</a>
+			<a href="contact.html">Contact</a>
+		</div>
+	</div>
+	<span style="font-size:50px;cursor:pointer" onclick="openNav()">&#9776</span>
+	<!-- need this for the navigation -->
+	
+	<div class="content">
+    	<div class="info">
+            <h1 class="head"> Contact Us!</h1>
+            <h2 class="expl"> Reach us in any way if you have any questions about us, our offers, or our mission!</h2>
+			<form onsubmit="return false">
+			    <div class="Bcolor">
+			          <label for="name">Name</label>
+			          <input type="text" id="name" name="name" style="width:200px; margin-left:34px;"><br><br>
+			          <label for="email">Email</label>
+			          <input type="text" id="email" name="email" style="width:300px; margin-left:44px;"><br><br>
+			          <label for="lname" style="vertical-align: top;">Message</label>
+			          <textarea type="text" cols="40" rows="5" id="emailinfo" name="emailinfo"  class="resizedTextbox"></textarea><br>
+			          <button type="submit" id="opener" onclick="onSubmit()">Send</button>        
+			    </div>
+			</form>
+		</div>
+	    <div class="contactinfo">
+		    <a href="tel:+1234567891"><br><br>Call Us </a>  &nbsp; &nbsp;
+	          Follow our
+	        <a href = "https://www.instagram.com/kyliejenner/" target="_blank">Instagram</a>
+	        &nbsp; &nbsp;  Retweet us at our
+	        <a href = "https://www.twitter.com/kyliejenner/" target="_blank">Twitter</a>
+	    </div>
+	</div>
+
+	<script language="javascript">
+	    function clearStuff()
+	    {
+		    location.reload();
+	        document.getElementById("emailinfo").value = "Get Streaming, Buddy!";
+	        document.getElementById("name").value = "Get Streaming, Buddy!";
+	        document.getElementById("email").value = "Get Streaming, Buddy!";
+	    }
+	    function onSubmit()
+	    {
+	    	alert("Thank you for your message! We will get back to you within 2-3 business days!");
+	    }
+    </script>
+
+	<!-- need this for the navigation and footer -->
+    <script>
+    function openNav() {
+      document.getElementById("myNav").style.height = "100%";
+    }
+
+    function closeNav() {
+      document.getElementById("myNav").style.height = "0%";
+    }
+    </script>
+         
+    <div class="footer">PLAreNT, 2021. Designed by the Avocados.</div>     
+    <!-- need this for the navigation and footer -->
+</body>
+</html>
+

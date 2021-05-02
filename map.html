@@ -11,7 +11,7 @@
 		}
 		h2 {
 			font-size: 3vw;
-			padding-top: 6%;
+			padding-top: 3%;
 		}
 		#flexbox {
 			display: flex;
@@ -38,11 +38,18 @@
 			display: flex;
 		}
 		#ppur, #spur, #wfind {
-			padding: 3%;
+			flex: 33%;
+			padding: 2%;
 		}
 		#submit {
 			margin-top: 2%;
 			text-align: center !important;
+			background-color: #76c287;
+			border-radius: 10%;
+		  color: white;
+		  padding: 16px 32px;
+		  margin: 4px 2px;
+		  cursor: pointer;
 		}
 		.plantBox {
 			margin: 5%;
@@ -53,7 +60,7 @@
 			background-repeat: no-repeat;
 			background-size: contain;
 			background-position: center;
-			color: #58615a
+			color: #58615a;
 		}
 		.topbox {
 			text-align: left;
@@ -76,8 +83,8 @@
 			width: 300px;
 			border-radius: 4px;
 		}
-		input[type=submit]:hover {
-		  background-color: #93b8a0;
+		#submit:hover {
+		  background-color: #a8baac;
 		}
 		/* Optional: Makes the sample page fill the window. */
 		html,
@@ -87,7 +94,7 @@
 			padding: 0;
 		}
 		body {
-			background-color: #ff937a;
+			background-color: #ffa185;
 		}
 		.content {
 			color: black;
@@ -252,14 +259,9 @@
                 latitude = parseObj.results[0].geometry.location.lat;
                 longitude = parseObj.results[0].geometry.location.lng;
 
-                //Create a new object with the variables
-    			var pin = new Pin(type, latitude, longitude, store, item, price, notes);
-    			console.log("SDf", pin);
-    						
-				//Insert into database
-				
-				//Reload page (make a document.onReady function to display all markers when page is loaded)
-
+            //Create a new object with the variables
+	    			var pin = new Pin(type, latitude, longitude, store, item, price, notes);
+	    			console.log("SDf", pin);
             }    
         }
         //Create and send request
@@ -280,7 +282,7 @@
 			<a href="index.html">Home</a>
 			<a href="#">Search Info</a>
 			<a href="map.html">Resource Map</a>
-			<a href="#">Contact</a>
+			<a href="contact.html">Contact</a>
 		</div>
 	</div>
 	<span style="font-size:50px;cursor:pointer" onclick="openNav()">&#9776</span>
@@ -294,85 +296,92 @@
 		<p class="key"> (blue pin image here) = Saw an Exotic Wild Plant Here! </p><br>
 	</div>
 
-	<div class="imageBox">
-		<img src="pstore.JPG" class="img">
-		<img src="planting.JPG" class="img">
-	</div>
+	<div class="leafback">
+		<div class="imageBox">
+			<img src="pstore.JPG" class="img">
+			<img src="planting.JPG" class="img">
+		</div>
 
-	<div class="formBox">
-		<h2> Want to place a pin on the map? </h2>
-		<form method='post' action='http://localhost:8080/map.html/process'>
-			<p> Choose a type of pin to continue </p>
-			<div id="choices">
-				<div id="ppur"><input type="radio"  name="type" value="PlantPurchase" id="PlantPurchase" checked="checked"/>I puchased a great plant</div>
-				<div id="spur"><input type="radio"  name='type' value="SuppliesPurchase" id="SuppliesPurchase"/>I purchased great supplies</div>
-				<div id="wfind"><input type="radio"  name='type' value="WildPlant" id="WildPlant"/>I saw an interesting wild plant</div>
-			</div>
-			<div class="plantBox">
-				<div class="topbox">
-					<p style="color:#fff; text-align: center; font-size: 120%;"> Location </p>
-					<p id="streetNum"><label>Street Number: </label><input placeholder="ex... 259" type="text"  name='streetNum' /></p>
-					<p id="street"><label>Street: </label><input placeholder="ex... Elm St" type="text"  name='street' /></p>
-					<p id="city"><label>City: </label><input placeholder="ex... Somerville" type="text"  name='city' /></p>
-					<p id="state"><label>State: </label><input placeholder="ex... Massachusetts" type="text"  name='state' /></p>
-					<p id="country"><label>Country: </label><input placeholder="ex... USA" type="text"  name='country' /></p>
+		<div class="formBox">
+			<h2> Want to place a pin on the map? </h2>
+			<form method='post' action='http://localhost:8080/map.html/process'>
+				<p> Choose a type of pin to continue </p>
+				<div id="choices">
+					<div id="ppur"><input type="radio"  name="type" value="PlantPurchase" id="PlantPurchase"/>I puchased a great plant</div>
+					<div id="spur"><input type="radio"  name='type' value="SuppliesPurchase" id="SuppliesPurchase"/>I purchased great supplies</div>
+					<div id="wfind"><input type="radio"  name='type' value="WildPlant" id="WildPlant"/>I saw an interesting wild plant</div>
 				</div>
-				<div class="bottombox">
-					<br><p style="color:#fff; text-align: center; font-size: 120%;"> Information </p>
-					<p id="store"><label>Store Name: </label><input placeholder="ex... Niche" type="text"  name='store' /></p>
-					<p id="plantType"><label>Plant Type: </label><input placeholder="ex... Bamboo" type="text"  name='plantType' /></p>
-					<p id="supplyItem"><label>Supply Item: </label><input placeholder="ex... soil" type="text"  name='supplyItem' /></p>
-					<p id="price"><label>Price: </label><input placeholder="ex... $12" type="text"  name='price' /></p>
-					<p id="notes"><label>Notes: </label><textarea placeholder="ex... Great condition, friendly service!" id="notesText" type="text"  name='notes' /></textarea></p>
-					<p id="wildDescrip">Description: <textarea type="text"  name='wildDescrip' /></textarea></p>
-				</div><br>
-				<input type="submit" id="submit" type = "button" value = "Submit" onclick="onSubmit()"/>
-			</div>
-		</form>
+				<div class="plantBox" id="pot">
+					<div class="topbox">
+						<p style="color:#fff; text-align: center; font-size: 120%;"> Location </p>
+						<p id="streetNum"><label>Street Number: </label><input placeholder="ex... 259" type="text"  name='streetNum' /></p>
+						<p id="street"><label>Street: </label><input placeholder="ex... Elm St" type="text"  name='street' /></p>
+						<p id="city"><label>City: </label><input placeholder="ex... Sommerville" type="text"  name='city' /></p>
+						<p id="state"><label>State: </label><input placeholder="ex... Massachusetts" type="text"  name='state' /></p>
+						<p id="country"><label>Country: </label><input placeholder="ex... USA" type="text"  name='country' /></p>
+					</div>
+					<div class="bottombox">
+						<br><p style="color:#fff; text-align: center; font-size: 120%;"> Information </p>
+						<p id="store"><label>Store Name: </label><input placeholder="ex... Niche" type="text"  name='store' /></p>
+						<p id="plantType"><label>Plant Type: </label><input placeholder="ex... Bamboo" type="text"  name='plantType' /></p>
+						<p id="supplyItem"><label>Supply Item: </label><input placeholder="ex... soil" type="text"  name='supplyItem' /></p>
+						<p id="price"><label>Price: </label><input placeholder="ex... $12" type="text"  name='price' /></p>
+						<p id="notes"><label>Notes: </label><textarea placeholder="ex... Great condition, friendly service!" id="notesText" type="text"  name='notes' /></textarea></p>
+						<p id="wildDescrip">Description: <textarea type="text"  name='wildDescrip' /></textarea></p>
+					</div><br>
+					<input type="submit" id="submit" type = "button" value = "Submit" onclick="onSubmit()"/>
+				</div>
+			</form>
+		</div>
 	</div>
 
 	<script>
-		//Hides the street and city paragraphs to begin with
-		$("#location").show();
-			$("#store").show();
-			$("#plantType").show();
-			$("#price").show();
-			$("#notes").show();
-			$("#submit").show();
-
-			$("#supplyItem").hide();
-			$("#wildDescrip").hide();
+		var check = false;
+		toggle_visibility();
+		function toggle_visibility() {
+       var e = document.getElementById("pot");
+       if(check == false)
+          e.style.display = 'none';
+       else{
+          e.style.display = 'block';
+       }
+   }
+		//Hides some things to begin with
+		$("#supplyItem").hide();
+		$("#wildDescrip").hide();
 
 		//Shows items based on check
 		$('input[name="type"]:eq(0)').click(function() {
-			$("#location").show();
+			check = true;
+			toggle_visibility();
+			document.getElementById("pot").scrollIntoView();
 			$("#store").show();
 			$("#plantType").show();
 			$("#price").show();
 			$("#notes").show();
-			$("#submit").show();
 
 			$("#supplyItem").hide();
 			$("#wildDescrip").hide();
 		});
 
 		$('input[name="type"]:eq(1)').click(function(){
-			$("#location").show();
+			check = true;
+			toggle_visibility();
+			document.getElementById("pot").scrollIntoView();
 			$("#store").show();
 			$("#supplyItem").show();
 			$("#price").show();
 			$("#notes").show();
-			$("#submit").show();
 
 			$("#plantType").hide();
 			$("#wildDescrip").hide();
 		});
 
 		$('input[name="type"]:eq(2)').click(function(){
-			$("#location").show();
+			check = true;
+			toggle_visibility();
+			document.getElementById("pot").scrollIntoView();
 			$("#wildDescrip").show();
-			$("#submit").show();
-
 			$("#store").hide();
 			$("#plantType").hide();
 			$("#supplyItem").hide();

@@ -1,35 +1,107 @@
 <!doctype html>
 <html>
-
   <head>
     <title>PLAreNT</title>
     <link rel="stylesheet" type="text/css" href="style.css">
   </head>
   <style>
     body {
-      background-image: url("sven-brandsma-UIeAPW6JLIM-unsplash.jpg");
-      background-size: 100%;
+      background: url('homeback.jpg') no-repeat center fixed;    
+      background-size: cover;
     }
+    p {
+      font-size: 200%;
+      font-weight: 800;
+    }
+    .buttonright {
+      background-color: #dcfae3;
+      font-size: 200%;
+      position:absolute;
+      right: 0;
+      top: 48%;
+      width: 5%;
+      height: 10%;
+      border-radius: 4px;
+      border-color: transparent;
+    }
+    .buttonleft {
+      background-color: #dcfae3;
+      font-size: 200%;
+      position:absolute;
+      left: 0;
+      top: 48%;
+      float: left;
+      width: 5%;
+      height: 10%;
+      border-radius: 4px;
+      border-color: transparent;
+    }
+    .buttonright:hover, .buttonleft:hover {
+      cursor: pointer;
+      background-color: #c9d4cc;
+    }
+    
   </style>
   <body>
     <!-- need this for the navigation -->
     <div id="myNav" class="overlay">
       <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
       <div class="overlay-content">
-        <a href="#">Home</a>
+        <a href="index.html">Home</a>
         <a href="#">Search Info</a>
         <a href="map.html">Resource Map</a>
-        <a href="#">Contact</a>
+        <a href="contact.html">Contact</a>
       </div>
     </div>
-
     <span style="font-size:50px;cursor:pointer" onclick="openNav()">&#9776</span>
     <!-- need this for the navigation -->
-    
-    <div class="centeredText">
-      <h1>PLAreNT</h1>
-      <p><strong>some really cool tag line.</strong></p>
+
+    <div class="mySlides" >
+      <div>
+        <div style="text-align: left; padding-top: 18%; padding-left: 20%; padding-right: 40%; float: left">
+          <h1>PLAreNT</h1>
+          <p><strong>Keeping your garden happy with just a few clicks</strong></p>
+        </div>
+      </div>
     </div>
+    <div class="mySlides" class="centeredText">
+      <div class="text2" style="text-align: left; padding-left: 20%; padding-right: 40%; float: left">
+        <h1>Search for Plant Data</h1>
+        <p>Search your plant type into our database to retreive information about what your plant needs and wants. Sunlight, soil, water, and extra tips!</p><br>
+        <p>Have information on plant care for a plant that we don't have? Insert it into our database to help fellow plant lovers get the information they need!</p>
+      </div>
+    </div>
+    <div class="mySlides" class="centeredText">
+      <div class="text3" style="text-align: left; padding-left: 20%; padding-right: 40%; float: left">
+        <h1>Find Plant Resources</h1>
+        <p>Search a map of locations other users have explored and found great plants and supplies.</p><br>
+        <p>You can even see where cool, wild plants have been found around your area!</p><br>
+        <p>Want to add a pin onto the map where you bought or found something? Let us know the location and information on our form and we'll add your pin to the resource map!</p>
+      </div>
+    </div>
+    <button class="buttonleft" onclick="plusDivs(-1)">&#10094;</button>
+    <button class="buttonright" onclick="plusDivs(+1)">&#10095;</button>
+
+    <script>
+      var slideIndex = 1;
+      showDivs(slideIndex);
+
+      function plusDivs(n) {
+        showDivs(slideIndex += n);
+      }
+
+      function showDivs(n) {
+        var i;
+        var x = document.getElementsByClassName("mySlides");
+        if (n > x.length) {slideIndex = 1}
+        if (n < 1) {slideIndex = x.length} ;
+        for (i = 0; i < x.length; i++) {
+          x[i].style.display = "none";
+        }
+        x[slideIndex-1].style.display = "block";
+      }
+
+    </script>
     
     <!-- need this for the navigation and footer -->
     <script>
