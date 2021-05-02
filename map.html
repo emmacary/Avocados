@@ -145,6 +145,25 @@
 			position: boston1,
 			map: map,
 		});
+
+		//Recenter map if user allows location
+		if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          pos = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          };
+          map.setCenter(pos);
+        },
+        () => {
+          handleLocationError(true, infoWindow, map.getCenter());
+        }
+      );
+    } else {
+      // Browser doesn't support Geolocation
+      handleLocationError(false, infoWindow, map.getCenter());
+    }
 	
 		//Creates a marker and an info-window for each marker
 		for (var i=0; i < pins.length; i++) {
@@ -188,29 +207,6 @@
 		    infowindow.open(map, marker);
 		  });
 		}
-	}
-	getLocation();
-
-	// Resets the center of the map to be user's location
-	var pos;
-	function getLocation() {
-	 if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          pos = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          };
-          map.setCenter(pos);
-        },
-        () => {
-          handleLocationError(true, infoWindow, map.getCenter());
-        }
-      );
-    } else {
-      // Browser doesn't support Geolocation
-      handleLocationError(false, infoWindow, map.getCenter());
-    }
 	}
 
 	function onSubmit(){
