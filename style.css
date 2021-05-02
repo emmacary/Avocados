@@ -28,7 +28,7 @@ div.centeredText {
     transform: translate(-50%, -50%);
 }
 
-.logo {
+img.logo {
   width: 8%;
   height: auto;
   display: inline-block;
