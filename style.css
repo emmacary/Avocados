@@ -7,10 +7,12 @@ body {
 span {
   float: right;
   padding-right: 25px;
+  display: inline-block;
 }
 
 h1 {
   font-size: 80px;
+  display: inline-block;
 }
 
 p {
@@ -21,10 +23,17 @@ div.centeredText {
     border-radius: 1em;
     padding: 1em;
     position: absolute;
-    top: 50%;
-    left: 50%;
+
     margin-right: -50%;
     transform: translate(-50%, -50%);
+}
+
+.logo {
+  width: 8%;
+  height: auto;
+  display: inline-block;
+  top: 0;
+  float: left;
 }
 
 /* menu bar */
