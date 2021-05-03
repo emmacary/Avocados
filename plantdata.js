@@ -2,6 +2,7 @@ const MongoClient = require('mongodb').MongoClient;
 var http = require('http');
 var fs = require('fs');
 var qs = require('querystring');
+var port = process.env.PORT || 3000;
 const url = "mongodb+srv://luckonar:Luckonar123@cluster0.7agxc.mongodb.net/Plarent?retryWrites=true&w=majority"; //LUCAS ADD
 
 http.createServer(function (req, res) {
@@ -105,4 +106,4 @@ http.createServer(function (req, res) {
     res.end();
   }
   
-}).listen(8080);
+}).listen(port);
