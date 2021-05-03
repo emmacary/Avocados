@@ -157,6 +157,14 @@ http.createServer(function (req, res) {
           setTimeout(function(){res.end();console.log("success!");},5000);
         });
     }
+    else if (req.url == "/contact.html"){
+        file="contact.html";
+        fs.readFile(file, function(err, txt) {
+          res.writeHead(200, {'Content-Type': 'text/html'});
+          res.write(txt);
+          res.end();
+        });
+    } 
     else 
     {
         res.writeHead(200, {'Content-Type':'text/html'});
