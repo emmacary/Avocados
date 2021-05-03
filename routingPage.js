@@ -5,11 +5,10 @@ var http = require('http');
 var fs = require('fs');
 var qs = require('querystring');
 
-// var port = process.env.PORT || 3000;
-var port = 8080; //localhost
+var port = process.env.PORT || 3000;
 
 http.createServer(function (req, res) {
-    if (req.url == "/index.html")
+    if (req.url == "/")
     {
         file = 'index.html';
         fs.readFile(file, function(err, txt) {
@@ -40,7 +39,7 @@ http.createServer(function (req, res) {
         	pdata = qs.parse(pdata);
             console.log(pdata);
         
-            MongoClient.connect(url, { useUnifiedTopology: true }, function(err, db) {
+            MongoClient.connect(url_S, { useUnifiedTopology: true }, function(err, db) {
                 if(err) { console.log("Connection err: " + err); return; }
         
                 var dbo = db.db("plarent");
@@ -61,7 +60,8 @@ http.createServer(function (req, res) {
             });  //end connect
         });
     }
-    else if(req.url == "/plantdata.html") {
+    else if(req.url == "/plantdata.html") 
+    {
         file="plantdata.html";
         fs.readFile(file, function(err, txt) {
           res.writeHead(200, {'Content-Type': 'text/html'});
@@ -69,9 +69,9 @@ http.createServer(function (req, res) {
           res.end();
         });
       
-      } 
-      else if(req.url == "/plantdata.html/search") 
-      {
+    } 
+    else if(req.url == "/plantdata.html/search") 
+    {
         file="plantdata.html";
         fs.readFile(file, function(err, txt) {
           res.writeHead(200, {'Content-Type': 'text/html'});
@@ -87,7 +87,7 @@ http.createServer(function (req, res) {
           console.log('on end');
           post = qs.parse(body);
           
-          MongoClient.connect(url, { useUnifiedTopology: true }, function(err, db) {
+          MongoClient.connect(url_L, { useUnifiedTopology: true }, function(err, db) {
             if(err) { return console.log(err); }
             
             var dbo = db.db("Plarent");
@@ -137,7 +137,7 @@ http.createServer(function (req, res) {
           console.log('on end');
           post = qs.parse(body);
           
-          MongoClient.connect(url, { useUnifiedTopology: true }, function(err, db) {
+          MongoClient.connect(url_L, { useUnifiedTopology: true }, function(err, db) {
             if(err) { return console.log(err); }
             
             var dbo = db.db("Plarent");
