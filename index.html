@@ -2,11 +2,12 @@
 <html>
   <head>
     <title>PLAreNT</title>
+    <link rel="shortcut icon" type="image/jpg" href="https://photos.smugmug.com/Plarent/n-8RTWkq/i-NNBZ2WP/0/b59e3896/M/i-NNBZ2WP-M.png"/>
     <link rel="stylesheet" type="text/css" href="style.css">
   </head>
   <style>
     body {
-      background: url('homeback.jpg') no-repeat center fixed;    
+      background: url('https://icedrive.net/0/9cp7w1XEOH') no-repeat center fixed;    
       background-size: cover;
     }
     p {
@@ -40,42 +41,141 @@
       cursor: pointer;
       background-color: #c9d4cc;
     }
-    
+    body {
+          font-family: Candara, Calibri, Segoe, "Segoe UI", Optima, Arial, sans-serif;
+          text-align: center;
+          color: #fff;
+    }
+
+    span {
+      float: right;
+      padding-right: 25px;
+      display: inline-block;
+    }
+
+    h1 {
+      font-size: 80px;
+      display: inline-block;
+    }
+
+    p {
+      font-size: 25px;
+    }
+
+    div.centeredText {
+        border-radius: 1em;
+        padding: 1em;
+        position: absolute;
+
+        margin-right: -50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .logo {
+      width: 8%;
+      height: auto;
+      display: inline-block;
+      top: 0;
+      float: left;
+    }
+
+    /* menu bar */
+    .overlay {
+      height: 0%;
+      width: 100%;
+      position: fixed;
+      z-index: 1;
+      top: 0;
+      left: 0;
+      background-color: rgb(0,0,0);
+      background-color: rgba(0,0,0, 0.9);
+      overflow-y: hidden;
+      transition: 0.5s;
+    }
+
+    .overlay-content {
+      position: relative;
+      top: 25%;
+      width: 100%;
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .overlay a {
+      padding: 8px;
+      text-decoration: none;
+      font-size: 36px;
+      color: #818181;
+      display: block;
+      transition: 0.3s;
+    }
+
+    .overlay a:hover, .overlay a:focus {
+      color: #f1f1f1;
+    }
+
+    .overlay .closebtn {
+      position: absolute;
+      top: 20px;
+      right: 45px;
+      font-size: 60px;
+    }
+
+    @media screen and (max-height: 450px) {
+      .overlay {overflow-y: auto;}
+      .overlay a {font-size: 20px}
+      .overlay .closebtn {
+      font-size: 40px;
+      top: 15px;
+      right: 35px;
+      }
+    }
+    /* end menu bar */
+
+    div.footer {
+       position:absolute;
+       bottom:0;
+       width:100%;
+       height:60px;   /* Height of the footer */
+       text-align: center;
+       color: #fff;
+       font-weight: 800;
+    }
   </style>
   <body>
     <!-- need this for the navigation -->
-    <div id="myNav" class="overlay">
-      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-      <div class="overlay-content">
-        <a href="index.html">Home</a>
-        <a href="#">Search Info</a>
-        <a href="map.html">Resource Map</a>
-        <a href="contact.html">Contact</a>
-      </div>
+  <a href="index.html" class="logoLink"><img src="https://photos.smugmug.com/Plarent/n-8RTWkq/i-NNBZ2WP/0/b59e3896/M/i-NNBZ2WP-M.png" class="logo"/></a>
+  <div id="myNav" class="overlay">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <div class="overlay-content">
+      <a href="index.html">Home</a>
+      <a href="plantdata.html">Search for Care Information</a>
+      <a href="map.html">Resource Map</a>
+      <a href="contact.html">Contact</a>
     </div>
-    <span style="font-size:50px;cursor:pointer" onclick="openNav()">&#9776</span>
-    <!-- need this for the navigation -->
+  </div>
+  <span style="font-size:50px;cursor:pointer" onclick="openNav()">&#9776</span>
+  <!-- need this for the navigation -->
 
     <div class="mySlides" >
       <div>
-        <div style="text-align: left; padding-top: 18%; padding-left: 20%; padding-right: 40%; float: left">
+        <div style="text-align: left; padding-top: 10%; padding-left: 20%; padding-right: 40%; float: left">
           <h1>PLAreNT</h1>
-          <p><strong>Keeping your garden happy with just a few clicks</strong></p>
+          <p><strong>Keeping your garden happy with just a few clicks.</strong></p>
         </div>
       </div>
     </div>
     <div class="mySlides" class="centeredText">
       <div class="text2" style="text-align: left; padding-left: 20%; padding-right: 40%; float: left">
-        <h1>Search for Plant Data</h1>
-        <p>Search your plant type into our database to retreive information about what your plant needs and wants. Sunlight, soil, water, and extra tips!</p><br>
+        <h1 style="margin-bottom: 1%; margin-top: 0;">Search for Plant Data</h1>
+        <p>Search your plant type into our database to retreive information about what your plant needs and wants. Sunlight, soil, water, and extra tips!</p>
         <p>Have information on plant care for a plant that we don't have? Insert it into our database to help fellow plant lovers get the information they need!</p>
       </div>
     </div>
     <div class="mySlides" class="centeredText">
       <div class="text3" style="text-align: left; padding-left: 20%; padding-right: 40%; float: left">
-        <h1>Find Plant Resources</h1>
-        <p>Search a map of locations other users have explored and found great plants and supplies.</p><br>
-        <p>You can even see where cool, wild plants have been found around your area!</p><br>
+        <h1 style="margin-bottom: 1%; margin-top: 0;">Find Plant Resources</h1>
+        <p>Search a map of locations other users have explored and found great plants, supplies, and wild plants around town!</p>
         <p>Want to add a pin onto the map where you bought or found something? Let us know the location and information on our form and we'll add your pin to the resource map!</p>
       </div>
     </div>
