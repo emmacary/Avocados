@@ -2,6 +2,8 @@ const MongoClient = require('mongodb').MongoClient;
 var http = require('http');
 var fs = require('fs');
 var qs = require('querystring');
+const express = require('express');
+const app = new express();
 var port = process.env.PORT || 3000;
 const url = "mongodb+srv://luckonar:Luckonar123@cluster0.7agxc.mongodb.net/Plarent?retryWrites=true&w=majority"; //LUCAS ADD
 
@@ -16,10 +18,8 @@ http.createServer(function (req, res) {
   
   } else if(req.url == "/plantdata.html/search") {
     
-    file="plantdata.html";
-    fs.readFile(file, function(err, txt) {
-      res.writeHead(200, {'Content-Type': 'text/html'});
-      res.write(txt);
+    app.get('/', function(request, response){
+      response.sendFile('plantdata.html');
     });
     var body = '';
     req.on('data', data => {
@@ -106,4 +106,4 @@ http.createServer(function (req, res) {
     res.end();
   }
   
-}).listen(port);
+}).listen(8080);

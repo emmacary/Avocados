@@ -1,10 +1,10 @@
 {
-  "name": "plantdata",
+  "name": "routingPage",
   "version": "1.0.0",
-  "description": "Matches stock ticker",
-  "main": "plant.js",
+  "description": "Plarent Website",
+  "main": "routingPage.js",
   "scripts": {
-    "start": "node plantdata.js"
+    "start": "node routingPage.js"
   },
   "repository": {
     "type": "git",

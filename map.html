@@ -213,9 +213,12 @@
 	}
 
 	function onSubmit(){
-		// if (!validate()){
-		//     return;
-		// }
+		if (!validate()){
+		    return false;
+		}
+		if(validate()){
+			alert("good");
+		}
 
 		//Get variables
 		var streetNum = $('input[name="streetNum"]').val();
@@ -261,12 +264,54 @@
         //Create a new object with the variables
   			var pin = new Pin(type, latitude, longitude, store, item, price, notes);
   			console.log("SDf", pin);
-        }    
+        }
     }
     //Create and send request
     req.open("GET", "https://maps.googleapis.com/maps/api/geocode/json?address=" + address + "&key=AIzaSyDbHeyWVPYGmWmoF4uv2E5tVaMQeCZ86cA", true);
     req.send();
 	}
+
+function validate() {
+	var pass = false;
+	//Check all location boxes filled
+	if($('input[name="streetNum"]').val() && $('input[name="street"]').val() && $('input[name="city"]').val() && $('input[name="state"]').val() && $('input[name="country"]').val()) {
+			//If plant type
+			if ($('input[name="type"]:eq(0)').is(":checked")) {
+				if($('input[name="store"]').val() && $('input[name="plantType"]').val() && $('input[name="price"]').val() && $('input[name="notes"]').val()) {
+						pass = true;
+					}
+					else {
+						alert("Please make sure to fill out all the information about the plant you bought to submit a pin!");
+						pass = false;
+					}
+			}
+			//If supply item
+			else if ($('input[name="type"]:eq(1)').is(":checked")) {
+				if($('input[name="store"]').val() && $('input[name="supplyItem"]').val() && $('input[name="price"]').val() && $('input[name="notes"]').val()) {
+						pass = true;
+				}
+				else {
+					alert("Please make sure to fill out all the information about the supplies you bought to submit a pin!");
+					pass = false;
+				}
+			}
+			//If wild plant
+			else if ($('input[name="type"]:eq(2)').is(":checked")) {
+				if($('input[name="wildDescrip"]').val()) {
+						pass = true;
+					}
+					else {
+						alert("Please make sure to give a description about the plant you saw!");
+						pass = false;
+					}
+			}
+	}
+	else {
+		alert("Please make sure to fill out all the location details!");
+		pass = false;
+	}
+	return pass;
+};
 
 
 </script>
@@ -280,7 +325,7 @@
 		<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
 		<div class="overlay-content">
 			<a href="index.html">Home</a>
-			<a href="#">Search Info</a>
+			<a href="plantdata.html">Search for Care Information</a>
 			<a href="map.html">Resource Map</a>
 			<a href="contact.html">Contact</a>
 		</div>
@@ -304,7 +349,7 @@
 
 		<div class="formBox">
 			<h2> Want to place a pin on the map? </h2>
-			<form method='post' action='http://localhost:8080/map.html/process'>
+			<form onsubmit='return onSubmit()' method='post' action='http://localhost:8080/map.html/process'>
 				<p> Choose a type of pin to continue </p>
 				<div id="choices">
 					<div id="ppur"><input type="radio"  name="type" value="PlantPurchase" id="PlantPurchase"/>I puchased a great plant</div>
@@ -329,7 +374,7 @@
 						<p id="notes"><label>Notes: </label><textarea placeholder="ex... Great condition, friendly service!" id="notesText" type="text"  name='notes' /></textarea></p>
 						<p id="wildDescrip">Description: <textarea type="text"  name='wildDescrip' /></textarea></p>
 					</div><br>
-					<input type="submit" id="submit" type = "button" value = "Submit" onclick="onSubmit()"/>
+					<input type="submit" id="submit" type = "button" value = "Submit" />
 				</div>
 			</form>
 		</div>
@@ -394,7 +439,7 @@
 	<!-- Async script executes immediately and must be after any DOM elements used in callback. -->
 	<script
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDbHeyWVPYGmWmoF4uv2E5tVaMQeCZ86cA&callback=initMap&libraries=&v=weekly"
-      async
+    	async
   ></script>
 
 	<!-- need this for the navigation and footer -->
