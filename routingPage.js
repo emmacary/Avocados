@@ -5,7 +5,7 @@ var http = require('http');
 var fs = require('fs');
 var qs = require('querystring');
 
-var port = process.env.PORT || 3000;
+var port = process.env.PORT || 3001;
 
 http.createServer(function (req, res) {
     if (req.url == "/")
@@ -69,7 +69,7 @@ http.createServer(function (req, res) {
     //       res.end();
     //     });
       
-    // } 
+    //} 
     // else if(req.url == "/plantdata.html/search") 
     // {
     //     file="plantdata.html";
