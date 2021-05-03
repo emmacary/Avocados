@@ -11,36 +11,53 @@ var port = 8080; //localhost
 http.createServer(function (req, res) {
     if (req.url == "/index.html")
     {
-            file = 'index.html';
-            fs.readFile(file, function(err, txt) {
-                res.writeHead(200, {'Content-Type': 'text/html'});
-                res.write(txt);
-                res.end();
-            });
+        file = 'index.html';
+        fs.readFile(file, function(err, txt) {
+            res.writeHead(200, {'Content-Type': 'text/html'});
+            res.write(txt);
+            res.end();
+        });
     }
     else if (req.url == "/map.html")
     {
         file = 'map.html';
         fs.readFile(file, function(err, txt) {
             res.writeHead(200, {'Content-Type': 'text/html'});
-            res.write("<div id='map'></div>");    
-            s = "";
-            s += "<script>";
-            s += "let map;";
-            s += "const boston1 = { lat: 42.3602534, lng: -71.0582912 };";
-            s += "function initMap() {";
-            s += "map = new google.maps.Map(document.getElementById('map'), {";
-            s += "center: boston1,";
-            s += "zoom: 12,";
-            s += "});";
-            s += "const marker = new google.maps.Marker({";
-            s += "position: boston1,";
-            s += "map: map,";
-            s += "});";
-            s += "}";
-            s += "</script>";
-            res.write(s);
             
+            /* Displaying website header */
+            header_s = "";
+            header_s += "<a href='index.html' class='logoLink'><img src='Logo.png' class='logo'/></a>";
+            header_s += "<div id='myNav' class='overlay'>";
+            header_s +=     "<a href='javascript:void(0)' class='closebtn' onclick='closeNav()'>&times;</a>";
+            header_s += 	"<div class='overlay-content'>";
+            header_s += 		"<a href='index.html'>Home</a>";
+            header_s += 		"<a href='plantdata.html'>Search for Care Information</a>";
+            header_s += 		"<a href='map.html'>Resource Map</a>";
+            header_s += 		"<a href='contact.html'>Contact</a>";
+            header_s += 	"</div>";
+            header_s += "</div>";
+            header_s += "<span style='font-size:50px;cursor:pointer' onclick='openNav()'>&#9776</span>";
+            header_s += "<h1 style='text-align: center'>Search for Nearby Resources!</h1><br><br><br>";
+            header_s += "<div id='map'></div>";
+            res.write(header_s);
+   
+            /* Displaying Google map */
+            map_s = "";
+            map_s += "<script>";
+            map_s += "let map;";
+            map_s += "const boston1 = { lat: 42.3602534, lng: -71.0582912 };";
+            map_s += "function initMap() {";
+            map_s +=    "map = new google.maps.Map(document.getElementById('map'), {";
+            map_s +=        "center: boston1,";
+            map_s +=        "zoom: 12,";
+            map_s +=    "});";
+            map_s +=    "const marker = new google.maps.Marker({";
+            map_s +=        "position: boston1,";
+            map_s +=        "map: map,";
+            map_s +=    "});";
+            map_s += "}";
+            map_s += "</script>";
+            res.write(map_s);
             res.write("<script src='https://maps.googleapis.com/maps/api/js?key=AIzaSyDbHeyWVPYGmWmoF4uv2E5tVaMQeCZ86cA&callback=initMap&libraries=&v=weekly' async></script>");
                     
             /* Connect to Mongo */
@@ -62,8 +79,7 @@ http.createServer(function (req, res) {
             		this.notes = notes;
             	}
 
-            	//Create an array of pin objects from database
-            	// This is temporary hardcoding an array for testing:
+            	// Create an array of pin objects from database
             	var pins = [];
             	var niche = new Pin("plant", 42.4085175, -71.1122302, "niche", "daisy", "$12", "great");
             	var boston = new Pin("supply", 42.3602534, -71.0582912, "btown", "city", "$300");
@@ -95,7 +111,8 @@ http.createServer(function (req, res) {
                 });
                 console.log("after close");
             });  //end connect
-        
+            
+            /* Displaying rest of HTML page below map*/
             res.write(txt);
             res.end();
         });
