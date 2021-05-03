@@ -8,7 +8,7 @@ var qs = require('querystring');
 var port = process.env.PORT || 3001;
 
 http.createServer(function (req, res) {
-    if (req.url == "/")
+    if (req.url == "/" || req.url == "/index.html")
     {
         file = 'index.html';
         fs.readFile(file, function(err, txt) {
