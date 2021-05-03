@@ -27,8 +27,9 @@
 			margin-left: 5%;
 		}
 		.key {
-			flex;
+			flex: 33%;
 			margin: 5%; 
+			font-size: 300%;
 		}
 		.imageBox {
 			display: flex;
@@ -37,7 +38,7 @@
 			flex: 50%;
 			width: 4%;
 		}
-		#choices {
+		.choices {
 			display: flex;
 		}
 		#ppur, #spur, #wfind {
@@ -80,6 +81,32 @@
 			font-size: 2vw;
 			padding-top: 0%;
 		}
+
+		input[type="radio"] {
+			opacity: 0;
+		  position: fixed;
+		  width: 0;
+		}
+		.choices label {
+		    display: inline-block;
+		    background-color: #cce8d4;
+		    padding: 10px 20px;
+		    font-size: 120%;
+		    border: 2px solid #444;
+		    border-radius: 4px;
+		    color: #ffa185;
+		}
+		.choices input[type="radio"]:checked + label {
+		    background-color:#bfb;
+		    border-color: #4c4;
+		}
+		.choices input[type="radio"]:focus + label {
+		    border: 2px dashed #444;
+		}
+		.choices label:hover {
+		 		background-color: #dfd;
+		}
+
 		input[type="text"], textarea {
 			float: right;
 			padding: 1%;
@@ -244,10 +271,14 @@
 			center: boston1,
 			zoom: 12,
 		});
+
+	  //Putting a pin on Boston
 		const marker = new google.maps.Marker({
 			position: boston1,
 			map: map,
+			icon: 'http://maps.google.com/mapfiles/kml/shapes/shopping.png',
 		});
+
 
 		//Recenter map if user allows location
 		if (navigator.geolocation) {
@@ -270,12 +301,29 @@
 	
 		//Creates a marker and an info-window for each marker
 		for (var i=0; i < pins.length; i++) {
+			//Makes location
 			const location = {lat : pins[i].latitude, lng: pins[i].longitude};
+
+			//Makes icon type
+			var icontype;
+			if (pins[i].type == "supply"){
+				icontype = "http://maps.google.com/mapfiles/kml/shapes/shopping.png";
+			}
+			else if (pins[i].type == "plant"){
+				icontype = "http://maps.google.com/mapfiles/kml/shapes/sunny.png";
+			}
+			else if (pins[i].type == "wild"){
+				icontype = "http://maps.google.com/mapfiles/kml/shapes/parks.png";
+			}
+
+			//Puts marker on map
 			const marker = new google.maps.Marker({
 				position: location,
 				map: map,
+				icon: icontype
 			});
 
+			//Makes info window
 			if (pins[i].notes == undefined){pins[i].notes = "No notes here!";}
 
 			var contentString = '';
@@ -410,7 +458,6 @@ function validate() {
 	return pass;
 };
 
-
 </script>
 
 </head>
@@ -433,9 +480,9 @@ function validate() {
 	<h1 style="text-align: center">Search for Nearby Resources!</h1><br><br><br>
 	<div id="map"></div>
 	<div id=flexbox>
-		<p class="key"> (red pin image here) = Bought a Plant Here! </p><br>
-		<p class="key"> (green pin image here) = Bought Supplies Here! </p><br>
-		<p class="key"> (blue pin image here) = Saw an Exotic Wild Plant Here! </p><br>
+		<p class="key"><img src= "http://maps.google.com/mapfiles/kml/shapes/sunny.png">Bought a Plant Here! </p><br>
+		<p class="key"><img src= "http://maps.google.com/mapfiles/kml/shapes/shopping.png">Bought Supplies Here! </p><br>
+		<p class="key"><img src= "http://maps.google.com/mapfiles/kml/shapes/parks.png">Saw a Cool Wild Plant Here! </p><br>
 	</div>
 
 	<div class="leafback">
@@ -448,10 +495,10 @@ function validate() {
 			<h2> Want to place a pin on the map? </h2>
 			<form onsubmit='return onSubmit()' method='post' action='/map.html/process'>
 				<p> Choose a type of pin to continue </p>
-				<div id="choices">
-					<div id="ppur"><input type="radio"  name="type" value="PlantPurchase" id="PlantPurchase"/>I puchased a great plant</div>
-					<div id="spur"><input type="radio"  name='type' value="SuppliesPurchase" id="SuppliesPurchase"/>I purchased great supplies</div>
-					<div id="wfind"><input type="radio"  name='type' value="WildPlant" id="WildPlant"/>I saw an interesting wild plant</div>
+				<div class="choices">
+					<div id="ppur"><input type="radio"  name="type" value="PlantPurchase" id="PlantPurchase"/><label for="PlantPurchase">I purchased a great plant</label></div>
+					<div id="spur"><input type="radio"  name='type' value="SuppliesPurchase" id="SuppliesPurchase"/><label for="SuppliesPurchase">I purchased great supplies</label></div>
+					<div id="wfind"><input type="radio"  name='type' value="WildPlant" id="WildPlant"/><label for="WildPlant">I saw an interesting wild plant</label></div>
 				</div>
 				<div class="plantBox" id="pot">
 					<div class="topbox">
