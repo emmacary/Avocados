@@ -130,7 +130,7 @@ http.createServer(function (req, res) {
         	pdata = qs.parse(pdata);
             console.log(pdata);
 
-            MongoClient.connect(url, { useUnifiedTopology: true }, function(err, db) {
+            MongoClient.connect(url_S, { useUnifiedTopology: true }, function(err, db) {
                 if(err) { console.log("Connection err: " + err); return; }
 
                 var dbo = db.db("plarent");
