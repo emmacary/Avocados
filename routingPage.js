@@ -33,32 +33,34 @@ http.createServer(function (req, res) {
         req.on('data', data => {
             pdata += data.toString();
         });
+        res.write("here");
         
-        // when complete POST data is received
-        req.on('end', () => {
-        	pdata = qs.parse(pdata);
-            console.log(pdata);
+        // // when complete POST data is received
+        // req.on('end', () => {
+        // 	pdata = qs.parse(pdata);
+        //     console.log(pdata);
         
-            MongoClient.connect(url_S, { useUnifiedTopology: true }, function(err, db) {
-                if(err) { console.log("Connection err: " + err); return; }
+        //     MongoClient.connect(url_S, { useUnifiedTopology: true }, function(err, db) {
+        //         if(err) { console.log("Connection err: " + err); return; }
         
-                var dbo = db.db("plarent");
-            	var coll = dbo.collection('pins');
+        //         var dbo = db.db("plarent");
+        //     	var coll = dbo.collection('pins');
                 
-                coll.insertOne(pdata, function(err, res) {
-                    if (err) { console.log("query err: " + err); return; }
-                    console.log("new document inserted");
-                })
-            	console.log("Success!");
+        //         coll.insertOne(pdata, function(err, res) {
+        //             if (err) { console.log("query err: " + err); return; }
+        //             console.log("new document inserted");
+        //         })
+        //     	console.log("Success!");
                 
-                file = 'map.html';
-                fs.readFile(file, function(err, txt) {
-                    res.writeHead(200, {'Content-Type': 'text/html'});
-                    res.write(txt);
-                    res.end();
-                });
-            });  //end connect
-        });
+        //         file = 'map.html';
+        //         fs.readFile(file, function(err, txt) {
+        //             res.writeHead(200, {'Content-Type': 'text/html'});
+        //             res.write(txt);
+        //             
+        //         });
+        //     });  //end connect
+        // });
+        res.end();
     }
     // else if(req.url == "/plantdata.html") 
     // {
