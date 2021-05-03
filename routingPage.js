@@ -1,6 +1,6 @@
 const MongoClient = require('mongodb').MongoClient;
-//const url_S = "mongodb+srv://sophiayang:123qweasd@cluster0.c2ncf.mongodb.net/plarent?retryWrites=true&w=majority"; 
-//const url_L = "mongodb+srv://luckonar:Luckonar123@cluster0.7agxc.mongodb.net/Plarent?retryWrites=true&w=majority"; 
+const url_S = "mongodb+srv://sophiayang:123qweasd@cluster0.c2ncf.mongodb.net/plarent?retryWrites=true&w=majority"; 
+const url_L = "mongodb+srv://luckonar:Luckonar123@cluster0.7agxc.mongodb.net/Plarent?retryWrites=true&w=majority"; 
 var http = require('http');
 var fs = require('fs');
 var qs = require('querystring');
@@ -17,15 +17,15 @@ http.createServer(function (req, res) {
             res.end();
         });
     }
-    // else if (req.url == "/map.html")
-    // {
-    //     file = 'map.html';
-    //     fs.readFile(file, function(err, txt) {
-    //         res.writeHead(200, {'Content-Type': 'text/html'});
-    //         res.write(txt);
-    //         res.end();
-    //     });
-    // }
+    else if (req.url == "/map.html")
+    {
+        file = 'map.html';
+        fs.readFile(file, function(err, txt) {
+            res.writeHead(200, {'Content-Type': 'text/html'});
+            res.write(txt);
+            res.end();
+        });
+    }
     // else if (req.url == "/map.html/process")
     // {
     //     res.writeHead(200, {'Content-Type': 'text/html'});
