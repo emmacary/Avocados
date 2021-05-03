@@ -4,11 +4,24 @@
   <head>
     <meta charset="utf-8">
     <title>PLAreNT</title>
-    <link rel="shortcut icon" type="image/jpg" href="Logo.png"/>
+    <link rel="shortcut icon" type="image/jpg" href="https://photos.smugmug.com/Plarent/n-8RTWkq/i-NNBZ2WP/0/b59e3896/M/i-NNBZ2WP-M.png"/>
     <link rel="stylesheet" type="text/css" href="style.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <style>
+    h1 {
+      font-size: 3vw;
+      text-align: center;
+      display: inline-block;
+    }
+    h2 {
+      font-size: 3vw;
+      padding-top: 3%;
+    }
+    body {
+      background-color: #ffa185;
+    }
+    
       body {
         font-family: Candara, Calibri, Segoe, "Segoe UI", Optima, Arial, sans-serif;
         text-align: center;
@@ -109,44 +122,32 @@
          color: #fff;
          font-weight: 800;
       }
-
-      h1 {
-        font-size: 3vw;
-        text-align: center;
-        display: inline-block;
-      }
-      h2 {
-        font-size: 3vw;
-        padding-top: 3%;
-      }
-      body {
-  			background-color: #ffa185;
-  		}
     </style>
   </head>
   
   <body>
-    <!-- navigation -->
-    <a href="index.html" class="logoLink"><img src="Logo.png" class="logo"/></a>
+      <!-- need this for the navigation -->
+    <a href="index.html" class="logoLink"><img src="https://photos.smugmug.com/Plarent/n-8RTWkq/i-NNBZ2WP/0/b59e3896/M/i-NNBZ2WP-M.png" class="logo"/></a>
     <div id="myNav" class="overlay">
       <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
       <div class="overlay-content">
         <a href="index.html">Home</a>
-  			<a href="plantdata.html">Search Info</a>
-  			<a href="map.html">Resource Map</a>
-  			<a href="contact.html">Contact</a>
+        <a href="plantdata.html">Search for Care Information</a>
+        <a href="map.html">Resource Map</a>
+        <a href="contact.html">Contact</a>
       </div>
     </div>
     <span style="font-size:50px;cursor:pointer" onclick="openNav()">&#9776</span>
-    <!-- navigation -->
+    <!-- need this for the navigation -->
              
 
     <div class="content">
     <h1>Search Info</h1>
     <h2>Search the database!</h2>
+    Results will appear at the bottom of the page.
     <br /><br />
     
-    <form method="post" action="http://localhost:8080/plantdata.html/search">
+    <form method="post" action="/plantdata.html/search">
       Input a plant name here: <input type="text" name="query" id="text"/>
       <br /><br />
       <input type="submit" value="Submit"/>
@@ -154,11 +155,11 @@
     
     <br />
     <h2>Add your own knowledge!</h2>
-    We highly recommend filling in all fields, but especially the name field.
+    We highly recommend filling in all fields, but especially the name field.<br />
     Failure to do so will prevent other users from finding the data you added.
     <br /><br />
     
-    <form method="post" action="http://localhost:8080/plantdata.html/insert">
+    <form method="post" action="/plantdata.html/insert">
       
       Plant Name <input type="text" name="name" id="name"/>
       <br /><br />
