@@ -248,24 +248,24 @@
 		//XMLHTTPRequest
 		var latitude;
 		var longitude;
-        var req = new XMLHttpRequest();
-        //When the readystate changes
-        req.onreadystatechange = function() {
-        	//If its succesful
-            if (this.readyState == 4 && this.status == 200) {
-                strObj = JSON.stringify(this.responseText);
-                parseObj = JSON.parse(this.responseText);
-                latitude = parseObj.results[0].geometry.location.lat;
-                longitude = parseObj.results[0].geometry.location.lng;
+    var req = new XMLHttpRequest();
+    //When the readystate changes
+    req.onreadystatechange = function() {
+    	//If its succesful
+        if (this.readyState == 4 && this.status == 200) {
+            strObj = JSON.stringify(this.responseText);
+            parseObj = JSON.parse(this.responseText);
+            latitude = parseObj.results[0].geometry.location.lat;
+            longitude = parseObj.results[0].geometry.location.lng;
 
-            //Create a new object with the variables
-	    			var pin = new Pin(type, latitude, longitude, store, item, price, notes);
-	    			console.log("SDf", pin);
-            }    
-        }
-        //Create and send request
-        req.open("GET", "https://maps.googleapis.com/maps/api/geocode/json?address=" + address + "&key=AIzaSyDbHeyWVPYGmWmoF4uv2E5tVaMQeCZ86cA", true);
-        req.send();
+        //Create a new object with the variables
+  			var pin = new Pin(type, latitude, longitude, store, item, price, notes);
+  			console.log("SDf", pin);
+        }    
+    }
+    //Create and send request
+    req.open("GET", "https://maps.googleapis.com/maps/api/geocode/json?address=" + address + "&key=AIzaSyDbHeyWVPYGmWmoF4uv2E5tVaMQeCZ86cA", true);
+    req.send();
 	}
 
 
