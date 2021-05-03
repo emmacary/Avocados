@@ -316,9 +316,6 @@
 		if (!validate()){
 		    return false;
 		}
-		if(validate()){
-			alert("good");
-		}
 
 		//Get variables
 		var streetNum = $('input[name="streetNum"]').val();
@@ -376,8 +373,8 @@ function validate() {
 	//Check all location boxes filled
 	if($('input[name="streetNum"]').val() && $('input[name="street"]').val() && $('input[name="city"]').val() && $('input[name="state"]').val() && $('input[name="country"]').val()) {
 			//If plant type
-			if ($('input[name="type"]:eq(0)').is(":checked")) {
-				if($('input[name="store"]').val() && $('input[name="plantType"]').val() && $('input[name="price"]').val() && $('input[name="notes"]').val()) {
+			if ($('#PlantPurchase').is(":checked")) {
+				if($('input[name="store"]').val() && $('input[name="plantType"]').val() && $('input[name="price"]').val() && $('#notesText').val()) {
 						pass = true;
 					}
 					else {
@@ -386,8 +383,8 @@ function validate() {
 					}
 			}
 			//If supply item
-			else if ($('input[name="type"]:eq(1)').is(":checked")) {
-				if($('input[name="store"]').val() && $('input[name="supplyItem"]').val() && $('input[name="price"]').val() && $('input[name="notes"]').val()) {
+			else if ($('#SuppliesPurchase').is(":checked")) {
+				if($('input[name="store"]').val() && $('input[name="supplyItem"]').val() && $('input[name="price"]').val() && $('#notesText').val()) {
 						pass = true;
 				}
 				else {
@@ -396,8 +393,8 @@ function validate() {
 				}
 			}
 			//If wild plant
-			else if ($('input[name="type"]:eq(2)').is(":checked")) {
-				if($('input[name="wildDescrip"]').val()) {
+			else if ($('#WildPlant').is(":checked")) {
+				if($('#wd').val()) {
 						pass = true;
 					}
 					else {
@@ -472,7 +469,7 @@ function validate() {
 						<p id="supplyItem"><label>Supply Item: </label><input placeholder="ex... soil" type="text"  name='supplyItem' /></p>
 						<p id="price"><label>Price: </label><input placeholder="ex... $12" type="text"  name='price' /></p>
 						<p id="notes"><label>Notes: </label><textarea placeholder="ex... Great condition, friendly service!" id="notesText" type="text"  name='notes' /></textarea></p>
-						<p id="wildDescrip">Description: <textarea type="text"  name='wildDescrip' /></textarea></p>
+						<p id="wildDescrip">Description: <textarea type="text" id="wd"  name='wildDescrip' /></textarea></p>
 					</div><br>
 					<input type="submit" id="submit" type = "button" value = "Submit" />
 				</div>
