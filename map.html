@@ -6,7 +6,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
 <style>
-		h1 {
+        h1 {
 			font-size: 3vw;
 		}
 		h2 {
@@ -121,7 +121,7 @@
 		this.price = price;
 		this.notes = notes;
 	}
-
+    
 	//Create an array of pin objects from database
 		//This is temporary hardcoding an array for testing:
 	var pins = [];
@@ -133,7 +133,7 @@
 	pins.push(wild);
 
 
-	//Creates the map centered at Boston unless user allows location
+	// Creates the map centered at Boston unless user allows location
 	let map;
 	const boston1 = { lat: 42.3602534, lng: -71.0582912 };
 	function initMap() {
@@ -145,7 +145,7 @@
 			position: boston1,
 			map: map,
 		});
-	
+    
 		//Creates a marker and an info-window for each marker
 		for (var i=0; i < pins.length; i++) {
 			const location = {lat : pins[i].latitude, lng: pins[i].longitude};
@@ -153,9 +153,9 @@
 				position: location,
 				map: map,
 			});
-
+    
 			if (pins[i].notes == undefined){pins[i].notes = "No notes here!";}
-
+    
 			var contentString = '';
 			if (pins[i].type == "plant" || pins[i].type == "supply") {
 				contentString =
@@ -260,9 +260,8 @@
                 latitude = parseObj.results[0].geometry.location.lat;
                 longitude = parseObj.results[0].geometry.location.lng;
 
-            //Create a new object with the variables
-	    			var pin = new Pin(type, latitude, longitude, store, item, price, notes);
-	    			console.log("SDf", pin);
+                //Create a new object with the variables
+    			var pin = new Pin(type, latitude, longitude, store, item, price, notes);
             }    
         }
         //Create and send request
@@ -277,7 +276,7 @@
 
 <body>
 	<!-- need this for the navigation -->
-	<div id="myNav" class="overlay">
+	<!-- <div id="myNav" class="overlay">
 		<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
 		<div class="overlay-content">
 			<a href="index.html">Home</a>
@@ -289,8 +288,8 @@
 	<span style="font-size:50px;cursor:pointer" onclick="openNav()">&#9776</span>
 	<!-- need this for the navigation -->
 
-	<h1 style="text-align: center">Search for Nearby Resources!</h1>
-	<div id="map"></div>
+	<!-- <h1 style="text-align: center">Search for Nearby Resources!</h1> --> -->
+	<!-- <div id="map"></div> -->
 	<div id=flexbox>
 		<p class="key"> (red pin image here) = Bought a Plant Here! </p><br>
 		<p class="key"> (green pin image here) = Bought Supplies Here! </p><br>
@@ -304,7 +303,7 @@
 		</div>
 
 		<div class="formBox">
-			<h2> Want to place a pin on the map? </h2>
+			<h2 id="example"> Want to place a pin on the map? </h2>
 			<form method='post' action='http://localhost:8080/map.html/process'>
 				<p> Choose a type of pin to continue </p>
 				<div id="choices">
@@ -393,10 +392,10 @@
 	</script>
 
 	<!-- Async script executes immediately and must be after any DOM elements used in callback. -->
-	<script
+	<!-- <script
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDbHeyWVPYGmWmoF4uv2E5tVaMQeCZ86cA&callback=initMap&libraries=&v=weekly"
       async
-  ></script>
+  ></script> -->
 
 	<!-- need this for the navigation and footer -->
 	<script>
