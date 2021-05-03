@@ -8,7 +8,7 @@ var qs = require('querystring');
 var port = process.env.PORT || 3001;
 
 http.createServer(function (req, res) {
-    if (req.url == "https://plarent.herokuapp.com/" || req.url == "plarent.herokuapp.com/index.html")
+    if (req.url == "/" || req.url == "/index.html")
     {
         file = 'index.html';
         fs.readFile(file, function(err, txt) {
@@ -17,7 +17,7 @@ http.createServer(function (req, res) {
             res.end();
         });
     }
-    else if (req.url == "plarent.herokuapp.com/map.html")
+    else if (req.url == "/map.html")
     {
         file = 'map.html';
         fs.readFile(file, function(err, txt) {
@@ -26,7 +26,7 @@ http.createServer(function (req, res) {
             res.end();
         });
     }
-    else if (req.url == "plarent.herokuapp.com/map.html/process")
+    else if (req.url == "/map.html/process")
     {
         res.writeHead(200, {'Content-Type': 'text/html'});
         pdata = "";
@@ -60,7 +60,7 @@ http.createServer(function (req, res) {
             });  //end connect
         });
     }
-    else if(req.url == "plarent.herokuapp.com/plantdata.html") 
+    else if(req.url == "/plantdata.html") 
     {
         file="plantdata.html";
         fs.readFile(file, function(err, txt) {
@@ -70,7 +70,7 @@ http.createServer(function (req, res) {
         });
       
     } 
-    else if(req.url == "plarent.herokuapp.com/plantdata.html/search") 
+    else if(req.url == "/plantdata.html/search") 
     {
         file="plantdata.html";
         fs.readFile(file, function(err, txt) {
@@ -120,7 +120,7 @@ http.createServer(function (req, res) {
           setTimeout(function(){res.end();console.log("success!");},5000);
         });
       } 
-      else if (req.url == "plarent.herokuapp.com/plantdata.html/insert") 
+      else if (req.url == "/plantdata.html/insert") 
       {
         file="plantdata.html";
         fs.readFile(file, function(err, txt) {
@@ -157,7 +157,7 @@ http.createServer(function (req, res) {
           setTimeout(function(){res.end();console.log("success!");},5000);
         });
     }
-    else if (req.url == "plarent.herokuapp.com/contact.html"){
+    else if (req.url == "/contact.html"){
         file="contact.html";
         fs.readFile(file, function(err, txt) {
           res.writeHead(200, {'Content-Type': 'text/html'});
