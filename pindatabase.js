@@ -6,8 +6,8 @@ var fs = require('fs');
 var qs = require('querystring');
 var NodeGeocoder = require('node-geocoder');
 
-// var port = process.env.PORT || 3000;
-var port = 8080; //localhost
+var port = process.env.PORT || 3000;
+//var port = 8080; //localhost
 
 http.createServer(function (req, res) {
     if (req.url == "/index.html")
