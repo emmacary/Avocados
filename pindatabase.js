@@ -7,7 +7,7 @@ var qs = require('querystring');
 var NodeGeocoder = require('node-geocoder');
 
 var port = process.env.PORT || 3000;
-//var port = 8080; //localhost
+// var port = 8080; //localhost
 
 http.createServer(function (req, res) {
     if (req.url == "/index.html" || req.url == "/")
@@ -42,7 +42,6 @@ http.createServer(function (req, res) {
             header_s += "<div id='map'></div>";
             res.write(header_s);
 
-
             //Object for pins
         	function Pin(type, latitude, longitude, store, item, price, notes, address)
         	{
@@ -58,9 +57,9 @@ http.createServer(function (req, res) {
 
         	// Create an array of pin objects from database
         	var pins = [];
-        	var niche = new Pin("plant", 42.4085175, -71.1122302, "niche", "daisy", "$12", "great", "78 Icecream Rd. Somerville, MA, USA");
-        	var boston = new Pin("supply", 42.3602534, -71.0582912, "btown", "city", "$300", null, "address here");
-        	var wild = new Pin("wild", 42.395819, -71.1222902, "niche", "daisy", "$12", "red and blue");
+        	var niche = new Pin("PlantPurchase", 42.4085175, -71.1122302, "niche", "daisy", "$12", "great", "78 Icecream Rd. Somerville, MA, USA");
+        	var boston = new Pin("SuppliesPurchase", 42.3602534, -71.0582912, "btown", "city", "$300", null, "1 City Hall Square #500, MA, USA");
+        	var wild = new Pin("WildPlant", 42.395819, -71.1222902, "niche", "daisy", "$12", "red and blue");
         	pins.push(niche);
         	pins.push(boston);
         	pins.push(wild);
@@ -83,7 +82,7 @@ http.createServer(function (req, res) {
                     var wildDescrip = item.wildDescrip;
                     var address = item.streetNum + " " + item.street + ", " + item.city + ", " + item.state + ", " + item.country;
 
-                    /** Use Node Geocoder module to get lat and long from address **/
+                    /* Use Node Geocoder module to get lat and long from address */
                     const options = {
                         provider: 'google',
                         apiKey: 'AIzaSyDbHeyWVPYGmWmoF4uv2E5tVaMQeCZ86cA',
@@ -102,12 +101,12 @@ http.createServer(function (req, res) {
                            console.log(err);
                        });
                        
-                       latitude = 42.373611; //hard coding cambridge latitude longitude
-                       longitude = -71.110558;
-                       if (wildDescrip != "") notes = wildDescrip;
-                       var newpin = new Pin(type, latitude, longitude, store, supplyItem, price, notes, address);
-                       // console.log(newpin);
-                       pins.push(newpin);
+                   latitude = 42.373611; //hard coding cambridge latitude longitude
+                   longitude = -71.110558;
+                   if (wildDescrip != "") notes = wildDescrip;
+                   var newpin = new Pin(type, latitude, longitude, store, supplyItem, price, notes, address);
+                   // console.log(newpin);
+                   pins.push(newpin);
                 });
                 s.on("end", function() {
                     console.log(pins);
@@ -117,6 +116,7 @@ http.createServer(function (req, res) {
                     res.write("<script>pins =" + pinarray_string + "</script>");
                     map_s = "";
                     map_s += "<script>";
+                    //Creates the map centered at Boston unless user allows location
                     map_s += "let map;";
                     map_s += "const boston1 = { lat: 42.3602534, lng: -71.0582912 };";
                     map_s += "function initMap() {";
@@ -124,51 +124,74 @@ http.createServer(function (req, res) {
                     map_s +=        "center: boston1,";
                     map_s +=        "zoom: 12,";
                     map_s +=    "});";
+                    //Putting a pin on Boston
                     map_s +=    "const marker = new google.maps.Marker({";
                     map_s +=        "position: boston1,";
                     map_s +=        "map: map,";
                     map_s +=    "});";
-
+                    
+                    //Recenter map if user allows location
+                    map_s +=    "if (navigator.geolocation) {";
+                    map_s +=        "navigator.geolocation.getCurrentPosition(";
+                    map_s +=            "(position) => {";
+                    map_s +=                "pos = {";
+                    map_s +=                    "lat: position.coords.latitude,";
+                    map_s +=                    "lng: position.coords.longitude,";
+                    map_s +=                "};";
+                    map_s +=                "map.setCenter(pos);";
+                    map_s +=            "},";
+                    map_s +=            "() => {";
+                    map_s +=                "handleLocationError(true, infoWindow, map.getCenter());";
+                    map_s +=            "}";
+                    map_s +=        ");";
+                    map_s +=    "} else {";
+                                    // Browser doesn't support Geolocation
+                    map_s +=        "handleLocationError(false, infoWindow, map.getCenter());";
+                    map_s +=    "}";
+                    
+                    //Creates a marker and an info-window for each marker
                     map_s +=    "for (var i=0; i < pins.length; i++) {";
-                    //Makes location 
+                                    //Makes location 
                     map_s +=    	"const location = {lat : pins[i].latitude, lng: pins[i].longitude};";
-                    //Makes icon type 
+                                    //Makes icon type 
                     map_s +=        "var icontype;"
-                    map_s +=		"if (pins[i].type == 'supply'){"
+                    map_s +=		"if (pins[i].type == 'SuppliesPurchase'){"
                     map_s +=			"icontype = 'http://maps.google.com/mapfiles/kml/shapes/shopping.png';"
                     map_s +=		"}"
-                    map_s +=		"else if (pins[i].type == 'plant'){"
+                    map_s +=		"else if (pins[i].type == 'PlantPurchase'){"
                     map_s +=			"icontype = 'http://maps.google.com/mapfiles/kml/shapes/sunny.png';"
                     map_s +=		"}"
-                    map_s +=		"else if (pins[i].type == 'wild'){"
+                    map_s +=		"else if (pins[i].type == 'WildPlant'){"
                     map_s +=			"icontype = 'http://maps.google.com/mapfiles/kml/shapes/parks.png';"
                     map_s +=		"}"
-                    //Puts marker on map
+                                    //Puts marker on map
                     map_s +=    	"const marker = new google.maps.Marker({";
                     map_s +=    		"position: location,";
                     map_s +=    		"map: map,";
                     map_s +=            "icon: icontype";
                     map_s +=    	"});";
-                    //Makes info window
+                                    //Makes info window
                     map_s +=	    "if (pins[i].notes == undefined){pins[i].notes = 'No notes here!';}";      
                     map_s +=	    "var contentString = '';";
-                    map_s +=	    "if (pins[i].type == 'plant' || pins[i].type == 'supply') {";
+                    map_s +=	    "if (pins[i].type == 'PlantPurchase' || pins[i].type == 'SuppliesPurchase') {";
                     map_s +=		    "contentString =";
                     map_s +=	        "'<div class=\"content\">' +";
                     map_s +=		        "'<h2 id=\"firstHeading\" class=\"firstHeading\"> Store: ' + pins[i].store + '</h2>' +";
                     map_s +=		        "'<div id=\"bodyContent\">' +";
-                    map_s +=		        "'<p> Item Puchased: ' + pins[i].item + '</p>' +";
+                    map_s +=		        "'<p> Item Purchased: ' + pins[i].item + '</p>' +";
                     map_s +=		        "'<p> Price: ' + pins[i].price + '</p>' +";
                     map_s +=		        "'<p> Notes: ' + pins[i].notes + '</p>'+";
+                    map_s +=                "'<p>' + pins[i].address + '</p>' +";
                     map_s +=	            "'</div>' +";
                     map_s +=	        "'</div>';";
                     map_s +=	    "}";
-                    map_s +=	    "if (pins[i].type == 'wild') {";
+                    map_s +=	    "if (pins[i].type == 'WildPlant') {";
                     map_s +=		    "contentString =";
                     map_s +=	        "'<div class=\"content\">' +";
                     map_s +=		        "'<h2 id=\"firstHeading\" class=\"firstHeading\">' + 'Wild Plant Found!' + '</h2>' +";
                     map_s +=		        "'<div id=\"bodyContent\">' +";
                     map_s +=		        "'<p> Description: ' + pins[i].notes + '</p>'+";
+                    map_s +=                "'<p>' + pins[i].address + '</p>' +";
                     map_s +=	            "'</div>' +";
                     map_s +=	        "'</div>';";
                     map_s +=	    "}";
@@ -185,7 +208,6 @@ http.createServer(function (req, res) {
                     res.write("<script src='https://maps.googleapis.com/maps/api/js?key=AIzaSyDbHeyWVPYGmWmoF4uv2E5tVaMQeCZ86cA&callback=initMap&libraries=&v=weekly' async></script>");
                     /* Displaying rest of HTML page below map*/
                     res.write(txt);
-
 
                     console.log("end of data"); 
                     db.close();
