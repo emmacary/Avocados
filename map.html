@@ -1,0 +1,605 @@
+<!doctype html>
+<html>
+<head>
+<title>PLAreNT</title>
+<link rel="shortcut icon" type="image/jpg" href="https://photos.smugmug.com/Plarent/n-8RTWkq/i-NNBZ2WP/0/b59e3896/M/i-NNBZ2WP-M.png"/>
+<link rel="stylesheet" type="text/css" href="style.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+<style>
+		h1 {
+			font-size: 3vw;
+			text-align: center;
+			display: inline-block;
+		}
+		h2 {
+			font-size: 3vw;
+			padding-top: 3%;
+		}
+		#flexbox {
+			display: flex;
+		}
+		#map {
+			height: 75%;
+			border-radius: 50%;
+			box-shadow: 20px 20px 10px #875632;
+			margin-right: 5%;
+			margin-left: 5%;
+		}
+		.key {
+			flex: 33%;
+			margin: 5%; 
+			font-size: 300%;
+		}
+		.imageBox {
+			display: flex;
+		}
+		.img {
+			flex: 50%;
+			width: 4%;
+		}
+		.choices {
+			display: flex;
+		}
+		#ppur, #spur, #wfind {
+			flex: 33%;
+			padding: 2%;
+		}
+		#submit {
+			margin-top: 2%;
+			text-align: center !important;
+			background-color: #76c287;
+			border-radius: 10%;
+		  color: white;
+		  padding: 16px 32px;
+		  margin: 4px 2px;
+		  cursor: pointer;
+		}
+		.plantBox {
+			margin: 5%;
+			margin-top: 0%;
+			padding-bottom: 10%;
+			padding-top: 13%;
+			background-image: url('https://photos.smugmug.com/Plarent/n-8RTWkq/i-xJtMFGq/0/022660a6/M/i-xJtMFGq-M.png');
+			background-repeat: no-repeat;
+			background-size: contain;
+			background-position: center;
+			color: #58615a;
+		}
+		.topbox {
+			text-align: left;
+			padding-left: 30%;
+			padding-right: 30%;
+		}
+		.bottombox {
+			text-align: left;
+			padding-left: 30%;
+			padding-right: 30%;
+		}
+		form {
+			margin: 3%;
+			font-size: 2vw;
+			padding-top: 0%;
+		}
+
+		input[type="radio"] {
+			opacity: 0;
+		  position: fixed;
+		  width: 0;
+		}
+		.choices label {
+		    display: inline-block;
+		    background-color: #cce8d4;
+		    padding: 10px 20px;
+		    font-size: 120%;
+		    border: 2px solid #444;
+		    border-radius: 4px;
+		    color: #ffa185;
+		}
+		.choices input[type="radio"]:checked + label {
+		    background-color:#bfb;
+		    border-color: #4c4;
+		}
+		.choices input[type="radio"]:focus + label {
+		    border: 2px dashed #444;
+		}
+		.choices label:hover {
+		 		background-color: #dfd;
+		}
+
+		input[type="text"], textarea {
+			float: right;
+			padding: 1%;
+			width: 300px;
+			border-radius: 4px;
+		}
+		#submit:hover {
+		  background-color: #a8baac;
+		}
+		/* Optional: Makes the sample page fill the window. */
+		html,
+		body {
+			height: 100%;
+			margin: 0;
+			padding: 0;
+		}
+		body {
+            background-image: url('vines.png'), url('vines.png');
+            background-position: left top, right top;
+            background-repeat: no-repeat, no-repeat;
+            background-color: #ffa185;
+    	}
+		.content {
+			color: black;
+		}
+		div.footer {
+			position:relative;
+			bottom:0;
+			width:100%;
+			height:60px;   /* Height of the footer */
+			text-align: center;
+			color: #fff;
+		}
+		body {
+		  font-family: Candara, Calibri, Segoe, "Segoe UI", Optima, Arial, sans-serif;
+		  text-align: center;
+		  color: #fff;
+		}
+
+		span {
+		  float: right;
+		  padding-right: 25px;
+		  display: inline-block;
+		}
+
+		h1 {
+		  font-size: 80px;
+		  display: inline-block;
+		}
+
+		p {
+		  font-size: 25px;
+		}
+
+		div.centeredText {
+		    border-radius: 1em;
+		    padding: 1em;
+		    position: absolute;
+
+		    margin-right: -50%;
+		    transform: translate(-50%, -50%);
+		}
+
+		.logo {
+		  width: 8%;
+		  height: auto;
+		  display: inline-block;
+		  top: 0;
+		  float: left;
+		}
+
+		/* menu bar */
+		.overlay {
+		  height: 0%;
+		  width: 100%;
+		  position: fixed;
+		  z-index: 1;
+		  top: 0;
+		  left: 0;
+		  background-color: rgb(0,0,0);
+		  background-color: rgba(0,0,0, 0.9);
+		  overflow-y: hidden;
+		  transition: 0.5s;
+		}
+
+		.overlay-content {
+		  position: relative;
+		  top: 25%;
+		  width: 100%;
+		  text-align: center;
+		  margin-top: 30px;
+		}
+
+		.overlay a {
+		  padding: 8px;
+		  text-decoration: none;
+		  font-size: 36px;
+		  color: #818181;
+		  display: block;
+		  transition: 0.3s;
+		}
+
+		.overlay a:hover, .overlay a:focus {
+		  color: #f1f1f1;
+		}
+
+		.overlay .closebtn {
+		  position: absolute;
+		  top: 20px;
+		  right: 45px;
+		  font-size: 60px;
+		}
+
+		@media screen and (max-height: 450px) {
+		  .overlay {overflow-y: auto;}
+		  .overlay a {font-size: 20px}
+		  .overlay .closebtn {
+		  font-size: 40px;
+		  top: 15px;
+		  right: 35px;
+		  }
+		}
+		/* end menu bar */
+
+		div.footer {
+		   position:absolute;
+		   bottom:0;
+		   width:100%;
+		   height:60px;   /* Height of the footer */
+		   text-align: center;
+		   color: #fff;
+		   font-weight: 800;
+		}
+</style>
+
+<script>	
+	//Object for pins
+	function Pin(type, latitude, longitude, store, item, price, notes)
+	{
+		this.type = type;
+		this.latitude = latitude;
+		this.longitude = longitude;
+		this.store = store;
+		this.item = item;
+		this.price = price;
+		this.notes = notes;
+	}
+
+	//Create an array of pin objects from database
+		//This is temporary hardcoding an array for testing:
+	var pins = [];
+	var niche = new Pin("plant", 42.4085175, -71.1122302, "niche", "daisy", "$12", "great");
+	var boston = new Pin("supply", 42.3602534, -71.0582912, "btown", "city", "$300");
+	var wild = new Pin("wild", 42.395819, -71.1222902, "niche", "daisy", "$12", "red and blue");
+	pins.push(niche);
+	pins.push(boston);
+	pins.push(wild);
+
+
+	//Creates the map centered at Boston unless user allows location
+	var map;
+	const boston1 = { lat: 42.3602534, lng: -71.0582912 };
+	function initMap() {
+		map = new google.maps.Map(document.getElementById("map"), {
+			center: boston1,
+			zoom: 12,
+		});
+
+	  //Putting a pin on Boston
+		const marker = new google.maps.Marker({
+			position: boston1,
+			map: map,
+			icon: 'http://maps.google.com/mapfiles/kml/shapes/shopping.png',
+		});
+
+
+		//Recenter map if user allows location
+		if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          pos = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          };
+          map.setCenter(pos);
+        },
+        () => {
+          handleLocationError(true, infoWindow, map.getCenter());
+        }
+      );
+    } else {
+      // Browser doesn't support Geolocation
+      handleLocationError(false, infoWindow, map.getCenter());
+    }
+	
+		//Creates a marker and an info-window for each marker
+		for (var i=0; i < pins.length; i++) {
+			//Makes location
+			const location = {lat : pins[i].latitude, lng: pins[i].longitude};
+
+			//Makes icon type
+			var icontype;
+			if (pins[i].type == "supply"){
+				icontype = "http://maps.google.com/mapfiles/kml/shapes/shopping.png";
+			}
+			else if (pins[i].type == "plant"){
+				icontype = "http://maps.google.com/mapfiles/kml/shapes/sunny.png";
+			}
+			else if (pins[i].type == "wild"){
+				icontype = "http://maps.google.com/mapfiles/kml/shapes/parks.png";
+			}
+
+			//Puts marker on map
+			const marker = new google.maps.Marker({
+				position: location,
+				map: map,
+				icon: icontype
+			});
+
+			//Makes info window
+			if (pins[i].notes == undefined){pins[i].notes = "No notes here!";}
+
+			var contentString = '';
+			if (pins[i].type == "plant" || pins[i].type == "supply") {
+				contentString =
+			    '<div class="content">' +
+			    '<div id="siteNotice">' +
+			    "</div>" +
+				    '<h1 id="firstHeading" class="firstHeading">' + pins[i].store + '</h1>' +
+				    '<div id="bodyContent">' +
+				    "<p> Item Puchased: " + pins[i].item + "</p>" +
+				    "<p> Price: " + pins[i].price + "</p>" +
+				    "<p> Notes: " + pins[i].notes + "</p>"+
+			    "</div>" +
+			    "</div>";
+			}
+			if (pins[i].type == "wild") {
+				contentString =
+			    '<div class="content">' +
+			    '<div id="siteNotice">' +
+			    "</div>" +
+				    '<h1 id="firstHeading" class="firstHeading">' + "Wild Plant Found!" + '</h1>' +
+				    '<div id="bodyContent">' +
+				    "<p> Description: " + pins[i].notes + "</p>"+
+			    "</div>" +
+			    "</div>";
+			}
+		  const infowindow = new google.maps.InfoWindow({
+		    content: contentString,
+		  });
+			marker.addListener("click", () => {
+		    infowindow.open(map, marker);
+		  });
+		}
+	}
+
+	function onSubmit(){
+		if (!validate()){
+		    return false;
+		}
+
+		//Get variables
+		var streetNum = $('input[name="streetNum"]').val();
+		var street = $('input[name="street"]').val();
+		var city = $('input[name="city"]').val();
+		var state = $('input[name="state"]').val();
+		var country = $('input[name="country"]').val();
+
+		var store = $('input[name="store"]').val();
+		var item = $('input[name="plantType"]').val();
+		var price = $('input[name="price"]').val();
+		var notes = $('input[name="notes"]').val();
+
+		//Make string for geocode API
+		var address = streetNum + "%" + street + "%" + city + "%" + state + "%" + country;
+
+		//Assign type of pin based on radio check
+		if ($('#PlantPurchase').is(":checked")) {
+			var type = "plant";
+		}
+		if ($('#SuppliesPurchase').is(":checked")) {
+			var type = "supply";
+		}
+		if ($('#WildPlant').is(":checked")) {
+			var type = "wild";
+			var notes = $('input[name="wildDescrip"]').val();
+		}
+
+		//Convert location to latitude and longitude variables
+		//XMLHTTPRequest
+		var latitude;
+		var longitude;
+    var req = new XMLHttpRequest();
+    //When the readystate changes
+    req.onreadystatechange = function() {
+    	//If its succesful
+        if (this.readyState == 4 && this.status == 200) {
+            strObj = JSON.stringify(this.responseText);
+            parseObj = JSON.parse(this.responseText);
+            latitude = parseObj.results[0].geometry.location.lat;
+            longitude = parseObj.results[0].geometry.location.lng;
+
+        //Create a new object with the variables
+  			var pin = new Pin(type, latitude, longitude, store, item, price, notes);
+  			console.log("SDf", pin);
+        }
+    }
+    //Create and send request
+    req.open("GET", "https://maps.googleapis.com/maps/api/geocode/json?address=" + address + "&key=AIzaSyDbHeyWVPYGmWmoF4uv2E5tVaMQeCZ86cA", true);
+    req.send();
+	}
+
+function validate() {
+	var pass = false;
+	//Check all location boxes filled
+	if($('input[name="streetNum"]').val() && $('input[name="street"]').val() && $('input[name="city"]').val() && $('input[name="state"]').val() && $('input[name="country"]').val()) {
+			//If plant type
+			if ($('#PlantPurchase').is(":checked")) {
+				if($('input[name="store"]').val() && $('input[name="plantType"]').val() && $('input[name="price"]').val() && $('#notesText').val()) {
+						pass = true;
+					}
+					else {
+						alert("Please make sure to fill out all the information about the plant you bought to submit a pin!");
+						pass = false;
+					}
+			}
+			//If supply item
+			else if ($('#SuppliesPurchase').is(":checked")) {
+				if($('input[name="store"]').val() && $('input[name="supplyItem"]').val() && $('input[name="price"]').val() && $('#notesText').val()) {
+						pass = true;
+				}
+				else {
+					alert("Please make sure to fill out all the information about the supplies you bought to submit a pin!");
+					pass = false;
+				}
+			}
+			//If wild plant
+			else if ($('#WildPlant').is(":checked")) {
+				if($('#wd').val()) {
+						pass = true;
+					}
+					else {
+						alert("Please make sure to give a description about the plant you saw!");
+						pass = false;
+					}
+			}
+	}
+	else {
+		alert("Please make sure to fill out all the location details!");
+		pass = false;
+	}
+	return pass;
+};
+
+</script>
+
+</head>
+
+<body>
+	<!-- need this for the navigation -->
+	<a href="index.html" class="logoLink"><img src="https://photos.smugmug.com/Plarent/n-8RTWkq/i-NNBZ2WP/0/b59e3896/M/i-NNBZ2WP-M.png" class="logo"/></a>
+	<div id="myNav" class="overlay">
+		<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+		<div class="overlay-content">
+			<a href="index.html">Home</a>
+			<a href="plantdata.html">Search for Care Information</a>
+			<a href="map.html">Resource Map</a>
+			<a href="contact.html">Contact</a>
+		</div>
+	</div>
+	<span style="font-size:50px;cursor:pointer" onclick="openNav()">&#9776</span>
+	<!-- need this for the navigation -->
+
+	<h1 style="text-align: center">Search for Nearby Resources!</h1><br><br><br>
+	<div id="map"></div>
+	<div id=flexbox>
+		<p class="key"><img src= "http://maps.google.com/mapfiles/kml/shapes/sunny.png">Bought a Plant Here! </p><br>
+		<p class="key"><img src= "http://maps.google.com/mapfiles/kml/shapes/shopping.png">Bought Supplies Here! </p><br>
+		<p class="key"><img src= "http://maps.google.com/mapfiles/kml/shapes/parks.png">Saw a Cool Wild Plant Here! </p><br>
+	</div>
+
+	<div class="leafback">
+		<div class="imageBox">
+			<img src="https://photos.smugmug.com/Plarent/n-8RTWkq/i-WS6w965/0/bf633c4d/X2/i-WS6w965-X2.jpg" class="img">
+			<img src="https://photos.smugmug.com/photos/i-t7xjDJN/0/bf17b7e2/X3/i-t7xjDJN-X3.jpg" class="img">
+		</div>
+
+		<div class="formBox">
+			<h2> Want to place a pin on the map? </h2>
+			<form onsubmit='return onSubmit()' method='post' action='/process'>
+				<p> Choose a type of pin to continue </p>
+				<div class="choices">
+					<div id="ppur"><input type="radio"  name="type" value="PlantPurchase" id="PlantPurchase"/><label for="PlantPurchase">I purchased a great plant</label></div>
+					<div id="spur"><input type="radio"  name='type' value="SuppliesPurchase" id="SuppliesPurchase"/><label for="SuppliesPurchase">I purchased great supplies</label></div>
+					<div id="wfind"><input type="radio"  name='type' value="WildPlant" id="WildPlant"/><label for="WildPlant">I saw an interesting wild plant</label></div>
+				</div>
+				<div class="plantBox" id="pot">
+					<div class="topbox">
+						<p style="color:#fff; text-align: center; font-size: 120%;"> Location </p>
+						<p id="streetNum"><label>Street Number: </label><input placeholder="ex... 259" type="text"  name='streetNum' /></p>
+						<p id="street"><label>Street: </label><input placeholder="ex... Elm St" type="text"  name='street' /></p>
+						<p id="city"><label>City: </label><input placeholder="ex... Sommerville" type="text"  name='city' /></p>
+						<p id="state"><label>State: </label><input placeholder="ex... Massachusetts" type="text"  name='state' /></p>
+						<p id="country"><label>Country: </label><input placeholder="ex... USA" type="text"  name='country' /></p>
+					</div>
+					<div class="bottombox">
+						<br><p style="color:#fff; text-align: center; font-size: 120%;"> Information </p>
+						<p id="store"><label>Store Name: </label><input placeholder="ex... Niche" type="text"  name='store' /></p>
+						<p id="plantType"><label>Plant Type: </label><input placeholder="ex... Bamboo" type="text"  name='plantType' /></p>
+						<p id="supplyItem"><label>Supply Item: </label><input placeholder="ex... soil" type="text"  name='supplyItem' /></p>
+						<p id="price"><label>Price: </label><input placeholder="ex... $12" type="text"  name='price' /></p>
+						<p id="notes"><label>Notes: </label><textarea placeholder="ex... Great condition, friendly service!" id="notesText" type="text"  name='notes' /></textarea></p>
+						<p id="wildDescrip">Description: <textarea type="text" id="wd"  name='wildDescrip' /></textarea></p>
+					</div><br>
+					<input type="submit" id="submit" type = "button" value = "Submit" />
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<script>
+		var check = false;
+		toggle_visibility();
+		function toggle_visibility() {
+       var e = document.getElementById("pot");
+       if(check == false)
+          e.style.display = 'none';
+       else{
+          e.style.display = 'block';
+       }
+   }
+		//Hides some things to begin with
+		$("#supplyItem").hide();
+		$("#wildDescrip").hide();
+
+		//Shows items based on check
+		$('input[name="type"]:eq(0)').click(function() {
+			check = true;
+			toggle_visibility();
+			document.getElementById("pot").scrollIntoView();
+			$("#store").show();
+			$("#plantType").show();
+			$("#price").show();
+			$("#notes").show();
+
+			$("#supplyItem").hide();
+			$("#wildDescrip").hide();
+		});
+
+		$('input[name="type"]:eq(1)').click(function(){
+			check = true;
+			toggle_visibility();
+			document.getElementById("pot").scrollIntoView();
+			$("#store").show();
+			$("#supplyItem").show();
+			$("#price").show();
+			$("#notes").show();
+
+			$("#plantType").hide();
+			$("#wildDescrip").hide();
+		});
+
+		$('input[name="type"]:eq(2)').click(function(){
+			check = true;
+			toggle_visibility();
+			document.getElementById("pot").scrollIntoView();
+			$("#wildDescrip").show();
+			$("#store").hide();
+			$("#plantType").hide();
+			$("#supplyItem").hide();
+			$("#price").hide();
+			$("#notes").hide();
+		});
+
+	</script>
+
+	<!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+	<script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDbHeyWVPYGmWmoF4uv2E5tVaMQeCZ86cA&callback=initMap&libraries=&v=weekly"
+    	async
+  ></script>
+
+	<!-- need this for the navigation and footer -->
+	<script>
+		function openNav() {
+			document.getElementById("myNav").style.height = "100%";
+		}
+		function closeNav() {
+			document.getElementById("myNav").style.height = "0%";
+		}
+	</script>
+	<div class="footer">PLAreNT, 2021. Designed by the Avocados.</div>     
+	<!-- need this for the navigation and footer -->
+
+</body>
+</html>

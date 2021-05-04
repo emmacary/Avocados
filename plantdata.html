@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <title>PLAreNT</title>
+    <link rel="shortcut icon" type="image/jpg" href="https://photos.smugmug.com/Plarent/n-8RTWkq/i-NNBZ2WP/0/b59e3896/M/i-NNBZ2WP-M.png"/>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <style>
+    h1 {
+      font-size: 3vw;
+      text-align: center;
+      display: inline-block;
+    }
+    h2 {
+      font-size: 3vw;
+      padding-top: 3%;
+    }
+    body {
+        background-image: url('vines.png'), url('vines.png');
+        background-position: left top, right top;
+        background-repeat: no-repeat, no-repeat;
+        background-color: #ffa185;
+    }
+    
+      body {
+        font-family: Candara, Calibri, Segoe, "Segoe UI", Optima, Arial, sans-serif;
+        text-align: center;
+        color: #fff;
+      }
+
+      span {
+        float: right;
+        padding-right: 25px;
+        display: inline-block;
+      }
+
+      h1 {
+        font-size: 80px;
+        display: inline-block;
+      }
+
+      p {
+        font-size: 25px;
+      }
+
+      div.centeredText {
+          border-radius: 1em;
+          padding: 1em;
+          position: absolute;
+
+          margin-right: -50%;
+          transform: translate(-50%, -50%);
+      }
+
+      .logo {
+        width: 8%;
+        height: auto;
+        display: inline-block;
+        top: 0;
+        float: left;
+      }
+
+      .searchC{
+          background-color: #386b3f;
+          width: 50%;
+          margin: 0 auto;
+          padding: 50px;
+          padding-top: 20px;
+          border-radius: 25px;
+      }
+      
+      #opener {
+  		text-align: center;
+  		background-color: #ffa185;
+  		border-radius: 10%;
+  		color: white;
+  		padding: 16px 32px;
+  		margin: 4px 2px;
+  	}
+      /* menu bar */
+      .overlay {
+        height: 0%;
+        width: 100%;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        background-color: rgb(0,0,0);
+        background-color: rgba(0,0,0, 0.9);
+        overflow-y: hidden;
+        transition: 0.5s;
+      }
+      .overlay-content {
+        position: relative;
+        top: 25%;
+        width: 100%;
+        text-align: center;
+        margin-top: 30px;
+      }
+
+      .overlay a {
+        padding: 8px;
+        text-decoration: none;
+        font-size: 36px;
+        color: #818181;
+        display: block;
+        transition: 0.3s;
+      }
+
+      .overlay a:hover, .overlay a:focus {
+        color: #f1f1f1;
+      }
+
+      .overlay .closebtn {
+        position: absolute;
+        top: 20px;
+        right: 45px;
+        font-size: 60px;
+      }
+
+      @media screen and (max-height: 450px) {
+        .overlay {overflow-y: auto;}
+        .overlay a {font-size: 20px}
+        .overlay .closebtn {
+        font-size: 40px;
+        top: 15px;
+        right: 35px;
+        }
+      }
+      /* end menu bar */
+
+      div.footer {
+         position:absolute;
+         bottom:0;
+         width:100%;
+         height:60px;   /* Height of the footer */
+         text-align: center;
+         color: #fff;
+         font-weight: 800;
+      }
+    </style>
+  </head>
+  
+  <body>
+      <!-- need this for the navigation -->
+    <a href="index.html" class="logoLink"><img src="https://photos.smugmug.com/Plarent/n-8RTWkq/i-NNBZ2WP/0/b59e3896/M/i-NNBZ2WP-M.png" class="logo"/></a>
+    <div id="myNav" class="overlay">
+      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+      <div class="overlay-content">
+        <a href="index.html">Home</a>
+        <a href="plantdata.html">Search for Care Information</a>
+        <a href="map.html">Resource Map</a>
+        <a href="contact.html">Contact</a>
+      </div>
+    </div>
+    <span style="font-size:50px;cursor:pointer" onclick="openNav()">&#9776</span>
+    <!-- need this for the navigation -->
+             
+
+    <div class="content">
+    <h1>Search Info</h1>
+    
+    <div class="searchC">
+    <h2>Search the database!</h2>
+    Results will appear at the bottom of the page.
+    <br /><br />
+    
+        <form method="post" action="/search" onSubmit=scroll(0, 100)>
+          Input a plant name here: <input type="text" name="query" id="text"/>
+          <br /><br />
+          <input type="submit" id="opener" value="Submit"/>
+        </form>
+    </div>
+    
+    <br />
+    <div class="searchC">
+        <h2>Add your own knowledge!</h2>
+        We highly recommend filling in all fields, but especially the name field.<br />
+        Failure to do so will prevent other users from finding the data you added.
+        <br /><br />
+        
+        <form method="post" action="/insert">
+          
+          Plant Name <input style="margin-left:34px;" type="text" name="name" id="name"/>
+          <br /><br />
+          
+          Water Frequency <input type="text" name="water" id="water"/>
+          <br /><br />
+          
+          Sunlight <input style="margin-left:66px;" type="text" name="sunlight" id="sunlight"/>
+          <br /><br />
+          
+          Difficulty <input style="margin-left:62px;" type="text" name="diff" id="diff"/>
+          <br /><br />
+          
+          Comments <input style="margin-left:52px;" type="text" name="comments" id="comments"/> 
+          <br /><br />
+          
+          <input type="submit" id="opener" value="Submit"/>
+        </form>
+        
+    </div>
+    
+    </div>
+      
+    <!-- need this for the navigation and footer -->
+    <script language="javascript">
+    function openNav() {
+      document.getElementById("myNav").style.height = "100%";
+    }
+
+    function closeNav() {
+      document.getElementById("myNav").style.height = "0%";
+    }
+    </script>  
+    <!-- need this for the navigation and footer (deleted footer lol whoops)-->
+  </body>
+  
+</html>
