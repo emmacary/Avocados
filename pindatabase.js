@@ -90,47 +90,24 @@ http.createServer(function (req, res) {
                     };
                     //still trying to figure this async stuff out ://
                     const geocoder = NodeGeocoder(options);
-                    
-                    function geocodestuff(callback) {
-                        geocoder.geocode(address)
-                           .then((res)=> {
-                               latitude = res[0].latitude;
-                               longitude = res[0].longitude;
-                               console.log(res);
-                               console.log(latitude);
-                               console.log(longitude)
-                               callback(null, latitude);
-                           })
-                           .catch((err)=> {
-                               console.log(err);
-                               callback(null, latitude);
-                           });
-                    }
-  
-                    geocodestuff(function(err, latitude){
-                      if(err){
-                        console.log(err);
-
-                      } else{
-                        console.log(latitude);
-                         if (wildDescrip != "") notes = wildDescrip;
-                         var newpin = new Pin(type, latitude, longitude, store, supplyItem, price, notes, address);
-                         // console.log(newpin);
-                         pins.push(newpin);
-                      }
-
-                    })
-                    
-                    
-                    // async function help() {
-                    //      const res = await geocoder.geocode(address);
-                    //      latitude = await res[0].latitude;
-                    //      console.log(latitude);
-                    //      longitude = await res[0].longitude;
-                    // }
-
-                     // help();  
-
+                    geocoder.geocode(address)
+                       .then((res)=> {
+                           //this stuff is coming AFTER we use the pin array  
+                           latitude = res[0].latitude;
+                           longitude = res[0].longitude;
+                           console.log(latitude);
+                           console.log(longitude)
+                       })
+                       .catch((err)=> {
+                           console.log(err);
+                       });
+                       
+                       latitude = 42.373611; //hard coding cambridge latitude longitude
+                       longitude = -71.110558;
+                       if (wildDescrip != "") notes = wildDescrip;
+                       var newpin = new Pin(type, latitude, longitude, store, supplyItem, price, notes, address);
+                       // console.log(newpin);
+                       pins.push(newpin);
                 });
                 s.on("end", function() {
                     console.log(pins);
