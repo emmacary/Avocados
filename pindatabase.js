@@ -6,7 +6,7 @@ var fs = require('fs');
 var qs = require('querystring');
 var NodeGeocoder = require('node-geocoder');
 
-// var port = process.env.PORT || 3000;
+var port = process.env.PORT || 3000;
 var port = 8080; //localhost
 
 http.createServer(function (req, res) {
@@ -27,7 +27,7 @@ http.createServer(function (req, res) {
 
             /* Displaying website header */
             header_s = "";
-            header_s += "<a href='index.html' class='logoLink'><img src='Logo.png' class='logo'/></a>";
+            header_s += "<a href='index.html' class='logoLink'><img src='https://photos.smugmug.com/Plarent/n-8RTWkq/i-NNBZ2WP/0/b59e3896/M/i-NNBZ2WP-M.png' class='logo'/></a>";
             header_s += "<div id='myNav' class='overlay'>";
             header_s +=     "<a href='javascript:void(0)' class='closebtn' onclick='closeNav()'>&times;</a>";
             header_s += 	"<div class='overlay-content'>";
@@ -44,7 +44,7 @@ http.createServer(function (req, res) {
 
 
             //Object for pins
-        	function Pin(type, latitude, longitude, store, item, price, notes)
+        	function Pin(type, latitude, longitude, store, item, price, notes, address)
         	{
         		this.type = type;
         		this.latitude = latitude;
@@ -53,12 +53,13 @@ http.createServer(function (req, res) {
         		this.item = item;
         		this.price = price;
         		this.notes = notes;
+                this.address = address;
         	}
 
         	// Create an array of pin objects from database
         	var pins = [];
-        	var niche = new Pin("plant", 42.4085175, -71.1122302, "niche", "daisy", "$12", "great");
-        	var boston = new Pin("supply", 42.3602534, -71.0582912, "btown", "city", "$300");
+        	var niche = new Pin("plant", 42.4085175, -71.1122302, "niche", "daisy", "$12", "great", "78 Icecream Rd. Somerville, MA, USA");
+        	var boston = new Pin("supply", 42.3602534, -71.0582912, "btown", "city", "$300", null, "address here");
         	var wild = new Pin("wild", 42.395819, -71.1222902, "niche", "daisy", "$12", "red and blue");
         	pins.push(niche);
         	pins.push(boston);
@@ -79,7 +80,8 @@ http.createServer(function (req, res) {
                     var supplyItem = item.supplyItem;
                     var price = item.price;
                     var notes = item.notes;
-                    var address = item.streetNum + item.street + item.city + item.state;
+                    var wildDescrip = item.wildDescrip;
+                    var address = item.streetNum + " " + item.street + ", " + item.city + ", " + item.state + ", " + item.country;
 
                     /** Use Node Geocoder module to get lat and long from address **/
                     const options = {
@@ -89,18 +91,11 @@ http.createServer(function (req, res) {
                     };
                     const geocoder = NodeGeocoder(options);
                     async function help() {
-                         const res = await geocoder.geocode('29 champs elysée paris');
+                         const res = await geocoder.geocode(address);
                          latitude = await res[0].latitude;
                          console.log(latitude);
                          longitude = await res[0].longitude;
-                         
-                         latitude = 42.4085175;
-                         longitude = -71.1122302;
-                         
-                          var newpin = await new Pin(type, latitude, longitude, store, supplyItem, price, notes);
-                          console.log(newpin);
-                          pins.push(newpin);
-                         
+
                          // geocoder.geocode(address)
                          //     .then((res)=> {
                          //         latitude = res[0].latitude;
@@ -113,8 +108,17 @@ http.createServer(function (req, res) {
                          //         console.log(err);
                          //     });
                     }
-                    
-                    help();             
+
+                     help();  
+
+                     latitude = 42.373611; //cambridge
+                     longitude = -71.110558;
+
+                     if (wildDescrip != "") notes = wildDescrip;
+                     var newpin = new Pin(type, latitude, longitude, store, supplyItem, price, notes, address);
+                     console.log(newpin);
+                     pins.push(newpin);
+
                 });
                 s.on("end", function() {
                     console.log(pins);
@@ -135,37 +139,48 @@ http.createServer(function (req, res) {
                     map_s +=        "position: boston1,";
                     map_s +=        "map: map,";
                     map_s +=    "});";
-                    //displaying pin markers and info-windows
+
                     map_s +=    "for (var i=0; i < pins.length; i++) {";
+                    //Makes location 
                     map_s +=    	"const location = {lat : pins[i].latitude, lng: pins[i].longitude};";
+                    //Makes icon type 
+                    map_s +=        "var icontype;"
+                    map_s +=		"if (pins[i].type == 'supply'){"
+                    map_s +=			"icontype = 'http://maps.google.com/mapfiles/kml/shapes/shopping.png';"
+                    map_s +=		"}"
+                    map_s +=		"else if (pins[i].type == 'plant'){"
+                    map_s +=			"icontype = 'http://maps.google.com/mapfiles/kml/shapes/sunny.png';"
+                    map_s +=		"}"
+                    map_s +=		"else if (pins[i].type == 'wild'){"
+                    map_s +=			"icontype = 'http://maps.google.com/mapfiles/kml/shapes/parks.png';"
+                    map_s +=		"}"
+                    //Puts marker on map
                     map_s +=    	"const marker = new google.maps.Marker({";
                     map_s +=    		"position: location,";
                     map_s +=    		"map: map,";
+                    map_s +=            "icon: icontype";
                     map_s +=    	"});";
+                    //Makes info window
                     map_s +=	    "if (pins[i].notes == undefined){pins[i].notes = 'No notes here!';}";      
                     map_s +=	    "var contentString = '';";
                     map_s +=	    "if (pins[i].type == 'plant' || pins[i].type == 'supply') {";
                     map_s +=		    "contentString =";
                     map_s +=	        "'<div class=\"content\">' +";
-                    map_s +=	        "'<div id=\"siteNotice\">' +";
-                    map_s +=	        "'</div>' +";
-                    map_s +=		        "'<h1 id=\"firstHeading\" class=\"firstHeading\">' + pins[i].store + '</h1>' +";
+                    map_s +=		        "'<h2 id=\"firstHeading\" class=\"firstHeading\"> Store: ' + pins[i].store + '</h2>' +";
                     map_s +=		        "'<div id=\"bodyContent\">' +";
                     map_s +=		        "'<p> Item Puchased: ' + pins[i].item + '</p>' +";
                     map_s +=		        "'<p> Price: ' + pins[i].price + '</p>' +";
                     map_s +=		        "'<p> Notes: ' + pins[i].notes + '</p>'+";
-                    map_s +=	        "'</div>' +";
+                    map_s +=	            "'</div>' +";
                     map_s +=	        "'</div>';";
                     map_s +=	    "}";
                     map_s +=	    "if (pins[i].type == 'wild') {";
                     map_s +=		    "contentString =";
                     map_s +=	        "'<div class=\"content\">' +";
-                    map_s +=	        "'<div id=\"siteNotice\">' +";
-                    map_s +=	        "'</div>' +";
-                    map_s +=		        "'<h1 id=\"firstHeading\" class=\"firstHeading\">' + 'Wild Plant Found!' + '</h1>' +";
+                    map_s +=		        "'<h2 id=\"firstHeading\" class=\"firstHeading\">' + 'Wild Plant Found!' + '</h2>' +";
                     map_s +=		        "'<div id=\"bodyContent\">' +";
                     map_s +=		        "'<p> Description: ' + pins[i].notes + '</p>'+";
-                    map_s +=	        "'</div>' +";
+                    map_s +=	            "'</div>' +";
                     map_s +=	        "'</div>';";
                     map_s +=	    "}";
                     map_s +=        "const infowindow = new google.maps.InfoWindow({";
@@ -216,7 +231,7 @@ http.createServer(function (req, res) {
                 })
             	console.log("Success!");
 
-                file = 'map.html';
+                file = 'redirect.html';
                 fs.readFile(file, function(err, txt) {
                     res.writeHead(200, {'Content-Type': 'text/html'});
                     res.write(txt);

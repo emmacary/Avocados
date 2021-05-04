@@ -237,6 +237,19 @@
 		   color: #fff;
 		   font-weight: 800;
 		}
+        
+        #firstHeading {
+            margin: 0px;
+        }
+        
+        .content p {
+            margin: 4px;
+            font-size: 15px;
+        }
+        
+        .content h2 {
+            font-size: 28px;
+        }
 </style>
 
 <script>	
@@ -273,32 +286,31 @@
 			zoom: 12,
 		});
 
-	  //Putting a pin on Boston
+	    //Putting a pin on Boston
 		const marker = new google.maps.Marker({
 			position: boston1,
 			map: map,
 			icon: 'http://maps.google.com/mapfiles/kml/shapes/shopping.png',
 		});
 
-
 		//Recenter map if user allows location
 		if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          pos = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          };
-          map.setCenter(pos);
-        },
-        () => {
-          handleLocationError(true, infoWindow, map.getCenter());
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    pos = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude,
+                    };
+                    map.setCenter(pos);
+                },
+                () => {
+                    handleLocationError(true, infoWindow, map.getCenter());
+                }
+            );
+        } else {
+            // Browser doesn't support Geolocation
+            handleLocationError(false, infoWindow, map.getCenter());
         }
-      );
-    } else {
-      // Browser doesn't support Geolocation
-      handleLocationError(false, infoWindow, map.getCenter());
-    }
 	
 		//Creates a marker and an info-window for each marker
 		for (var i=0; i < pins.length; i++) {
@@ -331,35 +343,31 @@
 			if (pins[i].type == "plant" || pins[i].type == "supply") {
 				contentString =
 			    '<div class="content">' +
-			    '<div id="siteNotice">' +
-			    "</div>" +
-				    '<h1 id="firstHeading" class="firstHeading">' + pins[i].store + '</h1>' +
+				    '<h2 id="firstHeading" class="firstHeading"> Store: ' + pins[i].store + '</h2>' +
 				    '<div id="bodyContent">' +
-				    "<p> Item Puchased: " + pins[i].item + "</p>" +
+				    "<p> Item Purchased: " + pins[i].item + "</p>" +
 				    "<p> Price: " + pins[i].price + "</p>" +
 				    "<p> Notes: " + pins[i].notes + "</p>" +
 				    "<p>" + pins[i].address + "</p>" +
-			    "</div>" +
+			        "</div>" +
 			    "</div>";
 			}
 			if (pins[i].type == "wild") {
 				contentString =
 			    '<div class="content">' +
-			    '<div id="siteNotice">' +
-			    "</div>" +
-				    '<h1 id="firstHeading" class="firstHeading">' + "Wild Plant Found!" + '</h1>' +
+				    '<h2 id="firstHeading" class="firstHeading">' + "Wild Plant Found!" + '</h2>' +
 				    '<div id="bodyContent">' +
 				    "<p> Description: " + pins[i].notes + "</p>" +
 				    "<p>" + pins[i].address + "</p>"+
 			    "</div>" +
 			    "</div>";
 			}
-		  const infowindow = new google.maps.InfoWindow({
-		    content: contentString,
-		  });
-			marker.addListener("click", () => {
-		    infowindow.open(map, marker);
-		  });
+            const infowindow = new google.maps.InfoWindow({
+                content: contentString,
+            });
+            marker.addListener("click", () => {
+                infowindow.open(map, marker);
+            });
 		}
 	}
 
@@ -414,7 +422,7 @@
         // req.open("GET", "https://maps.googleapis.com/maps/api/geocode/json?address=" + address + "&key=AIzaSyDbHeyWVPYGmWmoF4uv2E5tVaMQeCZ86cA", true);
         // req.send();
         // return allowed;
-    }
+    // }
     //Create and send request
     req.open("GET", "https://maps.googleapis.com/maps/api/geocode/json?address=" + address + "&key=AIzaSyDbHeyWVPYGmWmoF4uv2E5tVaMQeCZ86cA", true);
     req.send();
@@ -467,7 +475,22 @@ function validate() {
 </head>
 
 <body>
-	<div id=flexbox>
+	<!-- <a href="index.html" class="logoLink"><img src="https://photos.smugmug.com/Plarent/n-8RTWkq/i-NNBZ2WP/0/b59e3896/M/i-NNBZ2WP-M.png" class="logo"/></a>
+	<div id="myNav" class="overlay">
+		<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+		<div class="overlay-content">
+			<a href="index.html">Home</a>
+			<a href="plantdata.html">Search for Care Information</a>
+			<a href="map.html">Resource Map</a>
+			<a href="contact.html">Contact</a>
+		</div>
+	</div>
+	<span style="font-size:50px;cursor:pointer" onclick="openNav()">&#9776</span>
+
+	<h1 style="text-align: center">Search for Nearby Resources!</h1><br><br><br>
+	<div id="map"></div> -->
+    
+    <div id=flexbox>
 		<p class="key"><img src= "http://maps.google.com/mapfiles/kml/shapes/sunny.png">Bought a Plant Here! </p><br>
 		<p class="key"><img src= "http://maps.google.com/mapfiles/kml/shapes/shopping.png">Bought Supplies Here! </p><br>
 		<p class="key"><img src= "http://maps.google.com/mapfiles/kml/shapes/parks.png">Saw a Cool Wild Plant Here! </p><br>
