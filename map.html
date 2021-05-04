@@ -28,7 +28,7 @@
 		}
 		.key {
 			flex: 33%;
-			margin: 5%; 
+			margin: 5%;
 			font-size: 300%;
 		}
 		.imageBox {
@@ -124,8 +124,11 @@
 			padding: 0;
 		}
 		body {
-			background-color: #ffa185;
-		}
+            background-image: url('vines.png'), url('vines.png');
+            background-position: left top, right top;
+            background-repeat: no-repeat, no-repeat;
+            background-color: #ffa185;
+    	}
 		.content {
 			color: black;
 		}
@@ -239,7 +242,7 @@
 		}
 </style>
 
-<script>	
+<script>
 	//Object for pins
 	function Pin(type, latitude, longitude, store, item, price, notes, address)
 	{
@@ -299,7 +302,7 @@
       // Browser doesn't support Geolocation
       handleLocationError(false, infoWindow, map.getCenter());
     }
-	
+
 		//Creates a marker and an info-window for each marker
 		for (var i=0; i < pins.length; i++) {
 			//Makes location
@@ -598,7 +601,7 @@ function validate() {
 			document.getElementById("myNav").style.height = "0%";
 		}
 	</script>
-	<div class="footer">PLAreNT, 2021. Designed by the Avocados.</div>     
+	<div class="footer">PLAreNT, 2021. Designed by the Avocados.</div>
 	<!-- need this for the navigation and footer -->
 
 </body>
