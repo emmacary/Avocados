@@ -27,8 +27,9 @@
 			margin-left: 5%;
 		}
 		.key {
-			flex;
+			flex: 33%;
 			margin: 5%; 
+			font-size: 300%;
 		}
 		.imageBox {
 			display: flex;
@@ -37,7 +38,7 @@
 			flex: 50%;
 			width: 4%;
 		}
-		#choices {
+		.choices {
 			display: flex;
 		}
 		#ppur, #spur, #wfind {
@@ -80,6 +81,32 @@
 			font-size: 2vw;
 			padding-top: 0%;
 		}
+
+		input[type="radio"] {
+			opacity: 0;
+		  position: fixed;
+		  width: 0;
+		}
+		.choices label {
+		    display: inline-block;
+		    background-color: #cce8d4;
+		    padding: 10px 20px;
+		    font-size: 120%;
+		    border: 2px solid #444;
+		    border-radius: 4px;
+		    color: #ffa185;
+		}
+		.choices input[type="radio"]:checked + label {
+		    background-color:#bfb;
+		    border-color: #4c4;
+		}
+		.choices input[type="radio"]:focus + label {
+		    border: 2px dashed #444;
+		}
+		.choices label:hover {
+		 		background-color: #dfd;
+		}
+
 		input[type="text"], textarea {
 			float: right;
 			padding: 1%;
@@ -111,7 +138,7 @@
 			color: #fff;
 		}
 		body {
-		  font-family: Candara, Calibri, Segoe, "Segoe UI", Optima, Arial, sans-serif;
+		  font-family: Candara sans-serif;
 		  text-align: center;
 		  color: #fff;
 		}
@@ -214,7 +241,7 @@
 
 <script>	
 	//Object for pins
-	function Pin(type, latitude, longitude, store, item, price, notes)
+	function Pin(type, latitude, longitude, store, item, price, notes, address)
 	{
 		this.type = type;
 		this.latitude = latitude;
@@ -223,13 +250,14 @@
 		this.item = item;
 		this.price = price;
 		this.notes = notes;
+		this.address = address;
 	}
 
 	//Create an array of pin objects from database
 		//This is temporary hardcoding an array for testing:
 	var pins = [];
-	var niche = new Pin("plant", 42.4085175, -71.1122302, "niche", "daisy", "$12", "great");
-	var boston = new Pin("supply", 42.3602534, -71.0582912, "btown", "city", "$300");
+	var niche = new Pin("plant", 42.4085175, -71.1122302, "niche", "daisy", "$12", "great", "78 Icecream Rd. Somerville, MA, USA");
+	var boston = new Pin("supply", 42.3602534, -71.0582912, "btown", "city", "$300", null, "address here");
 	var wild = new Pin("wild", 42.395819, -71.1222902, "niche", "daisy", "$12", "red and blue");
 	pins.push(niche);
 	pins.push(boston);
@@ -237,85 +265,103 @@
 
 
 	//Creates the map centered at Boston unless user allows location
-	// let map;
-	// const boston1 = { lat: 42.3602534, lng: -71.0582912 };
-	// function initMap() {
-	// 	map = new google.maps.Map(document.getElementById("map"), {
-	// 		center: boston1,
-	// 		zoom: 12,
-	// 	});
-	// 	const marker = new google.maps.Marker({
-	// 		position: boston1,
-	// 		map: map,
-	// 	});
-    // 
-	// 	// Creates a marker and an info-window for each marker
-	// 	for (var i=0; i < pins.length; i++) {
-	// 		const location = {lat : pins[i].latitude, lng: pins[i].longitude};
-	// 		const marker = new google.maps.Marker({
-	// 			position: location,
-	// 			map: map,
-	// 		});
-    // 
-	// 		if (pins[i].notes == undefined){pins[i].notes = "No notes here!";}
-    // 
-	// 		var contentString = '';
-	// 		if (pins[i].type == "plant" || pins[i].type == "supply") {
-	// 			contentString =
-	// 		    '<div class="content">' +
-	// 		    '<div id="siteNotice">' +
-	// 		    "</div>" +
-	// 			    '<h1 id="firstHeading" class="firstHeading">' + pins[i].store + '</h1>' +
-	// 			    '<div id="bodyContent">' +
-	// 			    "<p> Item Puchased: " + pins[i].item + "</p>" +
-	// 			    "<p> Price: " + pins[i].price + "</p>" +
-	// 			    "<p> Notes: " + pins[i].notes + "</p>"+
-	// 		    "</div>" +
-	// 		    "</div>";
-	// 		}
-	// 		if (pins[i].type == "wild") {
-	// 			contentString =
-	// 		    '<div class="content">' +
-	// 		    '<div id="siteNotice">' +
-	// 		    "</div>" +
-	// 			    '<h1 id="firstHeading" class="firstHeading">' + "Wild Plant Found!" + '</h1>' +
-	// 			    '<div id="bodyContent">' +
-	// 			    "<p> Description: " + pins[i].notes + "</p>"+
-	// 		    "</div>" +
-	// 		    "</div>";
-	// 		}
-	// 	  const infowindow = new google.maps.InfoWindow({
-	// 	    content: contentString,
-	// 	  });
-	// 		marker.addListener("click", () => {
-	// 	    infowindow.open(map, marker);
-	// 	  });
-	// 	}
-	// }
-	// getLocation();
-    // 
-	// // Resets the center of the map to be user's location
-	// var pos;
-	// function getLocation() {
-	//  if (navigator.geolocation) {
-    //   navigator.geolocation.getCurrentPosition(
-    //     (position) => {
-    //       const pos = {
-    //         lat: position.coords.latitude,
-    //         lng: position.coords.longitude,
-    //       };
-    //       console.log(pos);
-    //       map.setCenter(pos);
-    //     },
-    //     () => {
-    //       handleLocationError(true, infoWindow, map.getCenter());
-    //     }
-    //   );
-    // } else {
-    //   // Browser doesn't support Geolocation
-    //   handleLocationError(false, infoWindow, map.getCenter());
-    // }
-	// }
+	var map;
+	const boston1 = { lat: 42.3602534, lng: -71.0582912 };
+	function initMap() {
+		map = new google.maps.Map(document.getElementById("map"), {
+			center: boston1,
+			zoom: 12,
+		});
+
+	  //Putting a pin on Boston
+		const marker = new google.maps.Marker({
+			position: boston1,
+			map: map,
+			icon: 'http://maps.google.com/mapfiles/kml/shapes/shopping.png',
+		});
+
+
+		//Recenter map if user allows location
+		if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          pos = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          };
+          map.setCenter(pos);
+        },
+        () => {
+          handleLocationError(true, infoWindow, map.getCenter());
+        }
+      );
+    } else {
+      // Browser doesn't support Geolocation
+      handleLocationError(false, infoWindow, map.getCenter());
+    }
+	
+		//Creates a marker and an info-window for each marker
+		for (var i=0; i < pins.length; i++) {
+			//Makes location
+			const location = {lat : pins[i].latitude, lng: pins[i].longitude};
+
+			//Makes icon type
+			var icontype;
+			if (pins[i].type == "supply"){
+				icontype = "http://maps.google.com/mapfiles/kml/shapes/shopping.png";
+			}
+			else if (pins[i].type == "plant"){
+				icontype = "http://maps.google.com/mapfiles/kml/shapes/sunny.png";
+			}
+			else if (pins[i].type == "wild"){
+				icontype = "http://maps.google.com/mapfiles/kml/shapes/parks.png";
+			}
+
+			//Puts marker on map
+			const marker = new google.maps.Marker({
+				position: location,
+				map: map,
+				icon: icontype
+			});
+
+			//Makes info window
+			if (pins[i].notes == undefined){pins[i].notes = "No notes here!";}
+
+			var contentString = '';
+			if (pins[i].type == "plant" || pins[i].type == "supply") {
+				contentString =
+			    '<div class="content">' +
+			    '<div id="siteNotice">' +
+			    "</div>" +
+				    '<h1 id="firstHeading" class="firstHeading">' + pins[i].store + '</h1>' +
+				    '<div id="bodyContent">' +
+				    "<p> Item Puchased: " + pins[i].item + "</p>" +
+				    "<p> Price: " + pins[i].price + "</p>" +
+				    "<p> Notes: " + pins[i].notes + "</p>" +
+				    "<p>" + pins[i].address + "</p>" +
+			    "</div>" +
+			    "</div>";
+			}
+			if (pins[i].type == "wild") {
+				contentString =
+			    '<div class="content">' +
+			    '<div id="siteNotice">' +
+			    "</div>" +
+				    '<h1 id="firstHeading" class="firstHeading">' + "Wild Plant Found!" + '</h1>' +
+				    '<div id="bodyContent">' +
+				    "<p> Description: " + pins[i].notes + "</p>" +
+				    "<p>" + pins[i].address + "</p>"+
+			    "</div>" +
+			    "</div>";
+			}
+		  const infowindow = new google.maps.InfoWindow({
+		    content: contentString,
+		  });
+			marker.addListener("click", () => {
+		    infowindow.open(map, marker);
+		  });
+		}
+	}
 
 	function onSubmit(){
         latLong();
@@ -369,61 +415,78 @@
         // req.send();
         // return allowed;
     }
+    //Create and send request
+    req.open("GET", "https://maps.googleapis.com/maps/api/geocode/json?address=" + address + "&key=AIzaSyDbHeyWVPYGmWmoF4uv2E5tVaMQeCZ86cA", true);
+    req.send();
+	}
 
-    function validate() {
-        // alert("inside validate");
-    	var pass = false;
-        
-    	//Check all location boxes filled
-    	if($('input[name="streetNum"]').val() && $('input[name="street"]').val() && $('input[name="city"]').val() && $('input[name="state"]').val() && $('input[name="country"]').val()) {
-    			//If plant type
-    			if ($('#PlantPurchase').is(":checked")) {
-    				if($('input[name="store"]').val() && $('input[name="plantType"]').val() && $('input[name="price"]').val() && $('#notesText').val()) {
-    						pass = true;
-    					}
-    					else {
-    						alert("Please make sure to fill out all the information about the plant you bought to submit a pin!");
-    						pass = false;
-    					}
-    			}
-    			//If supply item
-    			else if ($('#SuppliesPurchase').is(":checked")) {
-    				if($('input[name="store"]').val() && $('input[name="supplyItem"]').val() && $('input[name="price"]').val() && $('#notesText').val()) {
-    						pass = true;
-    				}
-    				else {
-    					alert("Please make sure to fill out all the information about the supplies you bought to submit a pin!");
-    					pass = false;
-    				}
-    			}
-    			//If wild plant
-    			else if ($('#WildPlant').is(":checked")) {
-    				if($('#wd').val()) {
-    						pass = true;
-    					}
-    					else {
-    						alert("Please make sure to give a description about the plant you saw!");
-    						pass = false;
-    					}
-    			}
-    	}
-    	else {
-    		alert("Please make sure to fill out all the location details!");
-    		pass = false;
-    	}
-    	return pass;
-    };
+function validate() {
+	var pass = false;
+	//Check all location boxes filled
+	if($('input[name="streetNum"]').val() && $('input[name="street"]').val() && $('input[name="city"]').val() && $('input[name="state"]').val() && $('input[name="country"]').val()) {
+			//If plant type
+			if ($('#PlantPurchase').is(":checked")) {
+				if($('input[name="store"]').val() && $('input[name="plantType"]').val() && $('input[name="price"]').val()) {
+						pass = true;
+					}
+					else {
+						alert("Please make sure to fill out all the information about the plant you bought to submit a pin!");
+						pass = false;
+					}
+			}
+			//If supply item
+			else if ($('#SuppliesPurchase').is(":checked")) {
+				if($('input[name="store"]').val() && $('input[name="supplyItem"]').val() && $('input[name="price"]').val()) {
+						pass = true;
+				}
+				else {
+					alert("Please make sure to fill out all the information about the supplies you bought to submit a pin!");
+					pass = false;
+				}
+			}
+			//If wild plant
+			else if ($('#WildPlant').is(":checked")) {
+				if($('#wd').val()) {
+						pass = true;
+					}
+					else {
+						alert("Please make sure to give a description about the plant you saw!");
+						pass = false;
+					}
+			}
+	}
+	else {
+		alert("Please make sure to fill out all the location details!");
+		pass = false;
+	}
+	return pass;
+};
+
 </script>
 
 </head>
 
 <body>
-	<!-- <div id='map'></div> -->
-    
-    <div id=flexbox>
-		<p class="key"> (red pin image here) = Bought a Plant Here! </p><br>
-		<p class="key"> (green pin image here) = Bought Supplies Here! </p><br>
-		<p class="key"> (blue pin image here) = Saw an Exotic Wild Plant Here! </p><br>
+	<!-- need this for the navigation -->
+	<a href="index.html" class="logoLink"><img src="https://photos.smugmug.com/Plarent/n-8RTWkq/i-NNBZ2WP/0/b59e3896/M/i-NNBZ2WP-M.png" class="logo"/></a>
+	<div id="myNav" class="overlay">
+		<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+		<div class="overlay-content">
+			<a href="index.html">Home</a>
+			<a href="plantdata.html">Search for Care Information</a>
+			<a href="map.html">Resource Map</a>
+			<a href="contact.html">Contact</a>
+		</div>
+	</div>
+	<span style="font-size:50px;cursor:pointer" onclick="openNav()">&#9776</span>
+	<!-- need this for the navigation -->
+
+	<h1 style="text-align: center">Search for Nearby Resources!</h1><br><br><br>
+	<div id="map"></div>
+	<div id=flexbox>
+		<p class="key"><img src= "http://maps.google.com/mapfiles/kml/shapes/sunny.png">Bought a Plant Here! </p><br>
+		<p class="key"><img src= "http://maps.google.com/mapfiles/kml/shapes/shopping.png">Bought Supplies Here! </p><br>
+		<p class="key"><img src= "http://maps.google.com/mapfiles/kml/shapes/parks.png">Saw a Cool Wild Plant Here! </p><br>
 	</div>
 
 	<div class="leafback">
@@ -434,12 +497,12 @@
 
 		<div class="formBox">
 			<h2> Want to place a pin on the map? </h2>
-			<form onsubmit='return onSubmit()' method='post' action='http://localhost:8080/map.html/process'>
+			<form onsubmit='return onSubmit()' method='post' action='/process'>
 				<p> Choose a type of pin to continue </p>
-				<div id="choices">
-					<div id="ppur"><input type="radio"  name="type" value="PlantPurchase" id="PlantPurchase"/>I puchased a great plant</div>
-					<div id="spur"><input type="radio"  name='type' value="SuppliesPurchase" id="SuppliesPurchase"/>I purchased great supplies</div>
-					<div id="wfind"><input type="radio"  name='type' value="WildPlant" id="WildPlant"/>I saw an interesting wild plant</div>
+				<div class="choices">
+					<div id="ppur"><input type="radio"  name="type" value="PlantPurchase" id="PlantPurchase"/><label for="PlantPurchase">I purchased a great plant</label></div>
+					<div id="spur"><input type="radio"  name='type' value="SuppliesPurchase" id="SuppliesPurchase"/><label for="SuppliesPurchase">I purchased great supplies</label></div>
+					<div id="wfind"><input type="radio"  name='type' value="WildPlant" id="WildPlant"/><label for="WildPlant">I saw an interesting wild plant</label></div>
 				</div>
 				<div class="plantBox" id="pot">
 					<div class="topbox">

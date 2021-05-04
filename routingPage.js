@@ -26,7 +26,7 @@ http.createServer(function (req, res) {
             res.end();
         });
     }
-    else if (req.url == "/map.html/process")
+    else if (req.url == "/process")
     {
         res.writeHead(200, {'Content-Type': 'text/html'});
         pdata = "";
@@ -70,7 +70,7 @@ http.createServer(function (req, res) {
         });
       
     } 
-    else if(req.url == "/plantdata.html/search") 
+    else if(req.url == "/search") 
     {
         file="plantdata.html";
         fs.readFile(file, function(err, txt) {
@@ -120,7 +120,7 @@ http.createServer(function (req, res) {
           setTimeout(function(){res.end();console.log("success!");},5000);
         });
       } 
-      else if (req.url == "/plantdata.html/insert") 
+      else if (req.url == "/insert") 
       {
         file="plantdata.html";
         fs.readFile(file, function(err, txt) {
