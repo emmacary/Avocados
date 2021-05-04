@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-  
+
   <head>
     <meta charset="utf-8">
     <title>PLAreNT</title>
@@ -24,9 +24,9 @@
         background-repeat: no-repeat, no-repeat;
         background-color: #ffa185;
     }
-    
+
       body {
-        font-family: Candara, Calibri, Segoe, "Segoe UI", Optima, Arial, sans-serif;
+        font-family: Candara sans-serif;
         text-align: center;
         color: #fff;
       }
@@ -71,7 +71,7 @@
           padding-top: 20px;
           border-radius: 25px;
       }
-      
+
       #opener {
   		text-align: center;
   		background-color: #ffa185;
@@ -143,7 +143,7 @@
       }
     </style>
   </head>
-  
+
   <body>
       <!-- need this for the navigation -->
     <a href="index.html" class="logoLink"><img src="https://photos.smugmug.com/Plarent/n-8RTWkq/i-NNBZ2WP/0/b59e3896/M/i-NNBZ2WP-M.png" class="logo"/></a>
@@ -158,54 +158,54 @@
     </div>
     <span style="font-size:50px;cursor:pointer" onclick="openNav()">&#9776</span>
     <!-- need this for the navigation -->
-             
+
 
     <div class="content">
     <h1>Search Info</h1>
-    
+
     <div class="searchC">
     <h2>Search the database!</h2>
     Results will appear at the bottom of the page.
     <br /><br />
-    
+
         <form method="post" action="/search" onSubmit=scroll(0, 100)>
           Input a plant name here: <input type="text" name="query" id="text"/>
           <br /><br />
           <input type="submit" id="opener" value="Submit"/>
         </form>
     </div>
-    
+
     <br />
     <div class="searchC">
         <h2>Add your own knowledge!</h2>
         We highly recommend filling in all fields, but especially the name field.<br />
         Failure to do so will prevent other users from finding the data you added.
         <br /><br />
-        
+
         <form method="post" action="/insert">
-          
+
           Plant Name <input style="margin-left:34px;" type="text" name="name" id="name"/>
           <br /><br />
-          
+
           Water Frequency <input type="text" name="water" id="water"/>
           <br /><br />
-          
+
           Sunlight <input style="margin-left:66px;" type="text" name="sunlight" id="sunlight"/>
           <br /><br />
-          
+
           Difficulty <input style="margin-left:62px;" type="text" name="diff" id="diff"/>
           <br /><br />
-          
-          Comments <input style="margin-left:52px;" type="text" name="comments" id="comments"/> 
+
+          Comments <input style="margin-left:52px;" type="text" name="comments" id="comments"/>
           <br /><br />
-          
+
           <input type="submit" id="opener" value="Submit"/>
         </form>
-        
+
     </div>
-    
+
     </div>
-      
+
     <!-- need this for the navigation and footer -->
     <script language="javascript">
     function openNav() {
@@ -215,8 +215,8 @@
     function closeNav() {
       document.getElementById("myNav").style.height = "0%";
     }
-    </script>  
+    </script>
     <!-- need this for the navigation and footer (deleted footer lol whoops)-->
   </body>
-  
+
 </html>
