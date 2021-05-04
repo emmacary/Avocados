@@ -1,10 +1,10 @@
 {
-  "name": "routingPage",
+  "name": "pindatabase.js",
   "version": "1.0.0",
   "description": "Plarent Website",
-  "main": "routingPage.js",
+  "main": "pindatabase.js",
   "scripts": {
-    "start": "node routingPage.js"
+    "start": "node pindatabase.js"
   },
   "repository": {
     "type": "git",
