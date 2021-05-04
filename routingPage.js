@@ -70,7 +70,7 @@ http.createServer(function (req, res) {
         });
       
     } 
-    else if(req.url == "/plantdata.html/search") 
+    else if(req.url == "/search") 
     {
         file="plantdata.html";
         fs.readFile(file, function(err, txt) {
