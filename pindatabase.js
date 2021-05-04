@@ -85,39 +85,51 @@ http.createServer(function (req, res) {
 
                     /** Use Node Geocoder module to get lat and long from address **/
                     const options = {
-                      provider: 'google',
-                      apiKey: 'AIzaSyDbHeyWVPYGmWmoF4uv2E5tVaMQeCZ86cA', // for Mapquest, OpenCage, Google Premier
-                      formatter: null // 'gpx', 'string', ...
+                        provider: 'google',
+                        apiKey: 'AIzaSyDbHeyWVPYGmWmoF4uv2E5tVaMQeCZ86cA',
                     };
+                    //still trying to figure this async stuff out ://
                     const geocoder = NodeGeocoder(options);
-                    async function help() {
-                         const res = await geocoder.geocode(address);
-                         latitude = await res[0].latitude;
-                         console.log(latitude);
-                         longitude = await res[0].longitude;
-
-                         // geocoder.geocode(address)
-                         //     .then((res)=> {
-                         //         latitude = res[0].latitude;
-                         //         longitude = res[0].longitude;
-                         //         console.log(res);
-                         //         console.log(latitude);
-                         //         console.log(longitude)
-                         //     })
-                         //     .catch((err)=> {
-                         //         console.log(err);
-                         //     });
+                    
+                    function geocodestuff(callback) {
+                        geocoder.geocode(address)
+                           .then((res)=> {
+                               latitude = res[0].latitude;
+                               longitude = res[0].longitude;
+                               console.log(res);
+                               console.log(latitude);
+                               console.log(longitude)
+                               callback(null, latitude);
+                           })
+                           .catch((err)=> {
+                               console.log(err);
+                               callback(null, latitude);
+                           });
                     }
+  
+                    geocodestuff(function(err, latitude){
+                      if(err){
+                        console.log(err);
 
-                     help();  
+                      } else{
+                        console.log(latitude);
+                         if (wildDescrip != "") notes = wildDescrip;
+                         var newpin = new Pin(type, latitude, longitude, store, supplyItem, price, notes, address);
+                         // console.log(newpin);
+                         pins.push(newpin);
+                      }
 
-                     latitude = 42.373611; //cambridge
-                     longitude = -71.110558;
+                    })
+                    
+                    
+                    // async function help() {
+                    //      const res = await geocoder.geocode(address);
+                    //      latitude = await res[0].latitude;
+                    //      console.log(latitude);
+                    //      longitude = await res[0].longitude;
+                    // }
 
-                     if (wildDescrip != "") notes = wildDescrip;
-                     var newpin = new Pin(type, latitude, longitude, store, supplyItem, price, notes, address);
-                     console.log(newpin);
-                     pins.push(newpin);
+                     // help();  
 
                 });
                 s.on("end", function() {
