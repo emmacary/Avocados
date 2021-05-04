@@ -4,6 +4,7 @@ const url_L = "mongodb+srv://luckonar:Luckonar123@cluster0.7agxc.mongodb.net/Pla
 var http = require('http');
 var fs = require('fs');
 var qs = require('querystring');
+var NodeGeocoder = require('node-geocoder');
 
 // var port = process.env.PORT || 3000;
 var port = 8080; //localhost
@@ -23,7 +24,7 @@ http.createServer(function (req, res) {
         file = 'map.html';
         fs.readFile(file, function(err, txt) {
             res.writeHead(200, {'Content-Type': 'text/html'});
-            
+
             /* Displaying website header */
             header_s = "";
             header_s += "<a href='index.html' class='logoLink'><img src='Logo.png' class='logo'/></a>";
@@ -40,8 +41,8 @@ http.createServer(function (req, res) {
             header_s += "<h1 style='text-align: center'>Search for Nearby Resources!</h1><br><br><br>";
             header_s += "<div id='map'></div>";
             res.write(header_s);
-   
-            
+
+
             //Object for pins
         	function Pin(type, latitude, longitude, store, item, price, notes)
         	{
@@ -62,7 +63,7 @@ http.createServer(function (req, res) {
         	pins.push(niche);
         	pins.push(boston);
         	pins.push(wild);
-            
+
             /* Connect to Mongo */
             MongoClient.connect(url_S, { useUnifiedTopology: true }, function(err, db) {
                 if(err) { console.log("Connection err: " + err); return; }
@@ -74,20 +75,51 @@ http.createServer(function (req, res) {
                 var s = coll.find().stream();
                 s.on("data", function(item) {
                     var type = item.type;
-                    var latitude = parseFloat(item.latitude);
-                    var longitude = parseFloat(item.longitude);
                     var store = item.store;
                     var supplyItem = item.supplyItem;
                     var price = item.price;
                     var notes = item.notes;
+                    var address = item.streetNum + item.street + item.city + item.state;
+
+                    /** Use Node Geocoder module to get lat and long from address **/
+                    const options = {
+                      provider: 'google',
+                      apiKey: 'AIzaSyDbHeyWVPYGmWmoF4uv2E5tVaMQeCZ86cA', // for Mapquest, OpenCage, Google Premier
+                      formatter: null // 'gpx', 'string', ...
+                    };
+                    const geocoder = NodeGeocoder(options);
+                    async function help() {
+                         const res = await geocoder.geocode('29 champs elysée paris');
+                         latitude = await res[0].latitude;
+                         console.log(latitude);
+                         longitude = await res[0].longitude;
+                         
+                         latitude = 42.4085175;
+                         longitude = -71.1122302;
+                         
+                          var newpin = await new Pin(type, latitude, longitude, store, supplyItem, price, notes);
+                          console.log(newpin);
+                          pins.push(newpin);
+                         
+                         // geocoder.geocode(address)
+                         //     .then((res)=> {
+                         //         latitude = res[0].latitude;
+                         //         longitude = res[0].longitude;
+                         //         console.log(res);
+                         //         console.log(latitude);
+                         //         console.log(longitude)
+                         //     })
+                         //     .catch((err)=> {
+                         //         console.log(err);
+                         //     });
+                    }
                     
-                    var newpin = new Pin(type, latitude, longitude, store, supplyItem, price, notes);
-                    pins.push(newpin);
+                    help();             
                 });
                 s.on("end", function() {
                     console.log(pins);
                     var pinarray_string = JSON.stringify(pins);
-                    
+
                     /* Displaying Google map */
                     res.write("<script>pins =" + pinarray_string + "</script>");
                     map_s = "";
@@ -149,8 +181,8 @@ http.createServer(function (req, res) {
                     res.write("<script src='https://maps.googleapis.com/maps/api/js?key=AIzaSyDbHeyWVPYGmWmoF4uv2E5tVaMQeCZ86cA&callback=initMap&libraries=&v=weekly' async></script>");
                     /* Displaying rest of HTML page below map*/
                     res.write(txt);
-                    
-                    
+
+
                     console.log("end of data"); 
                     db.close();
                     res.end();
@@ -159,7 +191,7 @@ http.createServer(function (req, res) {
             });  //end connect
         });
     }
-    else if (req.url == "/map.html/process")
+    else if (req.url == "/process")
     {
         res.writeHead(200, {'Content-Type': 'text/html'});
         pdata = "";
@@ -183,7 +215,7 @@ http.createServer(function (req, res) {
                     console.log("new document inserted");
                 })
             	console.log("Success!");
-                
+
                 file = 'map.html';
                 fs.readFile(file, function(err, txt) {
                     res.writeHead(200, {'Content-Type': 'text/html'});
@@ -201,7 +233,7 @@ http.createServer(function (req, res) {
           res.write(txt);
           res.end();
         });
-      
+
       } 
       else if(req.url == "/plantdata.html/search") 
       {
@@ -215,21 +247,21 @@ http.createServer(function (req, res) {
           body += data.toString();
           console.log('on data');
         });
-        
+
         req.on('end', () => {
           console.log('on end');
           post = qs.parse(body);
-          
+
           MongoClient.connect(url, { useUnifiedTopology: true }, function(err, db) {
             if(err) { return console.log(err); }
-            
+
             var dbo = db.db("Plarent");
             var collection = dbo.collection('Plarent');
-            
+
             theQuery = "";
             theQuery = {Name:post['query']};
             console.log(theQuery);
-            
+
             collection.find(theQuery).toArray(function(err, items) {
               if (err) { console.log(err); }
               else {
@@ -247,7 +279,7 @@ http.createServer(function (req, res) {
                 }
               }
             });
-            
+
             setTimeout(function(){db.close();console.log("success!");},1000);
           });
           setTimeout(function(){res.end();console.log("success!");},5000);
@@ -265,26 +297,26 @@ http.createServer(function (req, res) {
           body += data.toString();
           console.log('on data');
         });
-        
+
         req.on('end', () => {
           console.log('on end');
           post = qs.parse(body);
-          
+
           MongoClient.connect(url, { useUnifiedTopology: true }, function(err, db) {
             if(err) { return console.log(err); }
-            
+
             var dbo = db.db("Plarent");
             var collection = dbo.collection('Plarent');
-            
+
             var theQuery = {"Name": post["name"], "Water_Frequency": post["water"],
                         "Sunlight": post["sunlight"], "Difficulty": post["diff"], 
                         "Comments": post["comments"]};
-            
+
             collection.insertOne(theQuery, function(err, res) {
               if(err) { console.log("query err: " + err); return; }
             }   );
             res.write("<br /><br /> <h2>Thank you for submitting!</h2><br />");
-            
+
             setTimeout(function(){db.close();console.log("success!");},1000);
           });
           setTimeout(function(){res.end();console.log("success!");},5000);
