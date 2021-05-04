@@ -262,7 +262,7 @@ http.createServer(function (req, res) {
         });
 
       } 
-      else if(req.url == "/plantdata.html/search") 
+      else if(req.url == "/search") 
       {
         file="plantdata.html";
         fs.readFile(file, function(err, txt) {
@@ -279,7 +279,7 @@ http.createServer(function (req, res) {
           console.log('on end');
           post = qs.parse(body);
 
-          MongoClient.connect(url, { useUnifiedTopology: true }, function(err, db) {
+          MongoClient.connect(url_L, { useUnifiedTopology: true }, function(err, db) {
             if(err) { return console.log(err); }
 
             var dbo = db.db("Plarent");
@@ -312,7 +312,7 @@ http.createServer(function (req, res) {
           setTimeout(function(){res.end();console.log("success!");},5000);
         });
       } 
-      else if (req.url == "/plantdata.html/insert") 
+      else if (req.url == "/insert") 
       {
         file="plantdata.html";
         fs.readFile(file, function(err, txt) {
@@ -329,7 +329,7 @@ http.createServer(function (req, res) {
           console.log('on end');
           post = qs.parse(body);
 
-          MongoClient.connect(url, { useUnifiedTopology: true }, function(err, db) {
+          MongoClient.connect(url_L, { useUnifiedTopology: true }, function(err, db) {
             if(err) { return console.log(err); }
 
             var dbo = db.db("Plarent");
@@ -347,6 +347,13 @@ http.createServer(function (req, res) {
             setTimeout(function(){db.close();console.log("success!");},1000);
           });
           setTimeout(function(){res.end();console.log("success!");},5000);
+        });
+    } else if (req.url == "/contact.html") {
+        file="contact.html";
+        fs.readFile(file, function(err, txt) {
+          res.writeHead(200, {'Content-Type': 'text/html'});
+          res.write(txt);
+          res.end();
         });
     }
     else 
