@@ -3,11 +3,11 @@
 <head>
 <title>PLAreNT</title>
 <link rel="shortcut icon" type="image/jpg" href="https://photos.smugmug.com/Plarent/n-8RTWkq/i-NNBZ2WP/0/b59e3896/M/i-NNBZ2WP-M.png"/>
-<link rel="stylesheet" type="text/css" href="style.css">
+<!-- <link rel="stylesheet" type="text/css" href="style.css"> -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
 <style>
-		h1 {
+        h1 {
 			font-size: 3vw;
 			text-align: center;
 			display: inline-block;
@@ -124,7 +124,7 @@
 			padding: 0;
 		}
 		body {
-            background-image: url('vines.png'), url('vines.png');
+            background-image: url('https://photos.smugmug.com/photos/i-Vd7mV7q/0/c28cbca4/L/i-Vd7mV7q-L.png'), url('https://photos.smugmug.com/photos/i-Vd7mV7q/0/c28cbca4/L/i-Vd7mV7q-L.png');
             background-position: left top, right top;
             background-repeat: no-repeat, no-repeat;
             background-color: #ffa185;
@@ -240,6 +240,19 @@
 		   color: #fff;
 		   font-weight: 800;
 		}
+        
+        #firstHeading {
+            margin: 0px;
+        }
+        
+        .content p {
+            margin: 4px;
+            font-size: 15px;
+        }
+        
+        .content h2 {
+            font-size: 28px;
+        }
 </style>
 
 <script>
@@ -276,33 +289,32 @@
 			zoom: 12,
 		});
 
-	  //Putting a pin on Boston
+	    //Putting a pin on Boston
 		const marker = new google.maps.Marker({
 			position: boston1,
 			map: map,
 			icon: 'http://maps.google.com/mapfiles/kml/shapes/shopping.png',
 		});
 
-
 		//Recenter map if user allows location
 		if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          pos = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          };
-          map.setCenter(pos);
-        },
-        () => {
-          handleLocationError(true, infoWindow, map.getCenter());
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    pos = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude,
+                    };
+                    map.setCenter(pos);
+                },
+                () => {
+                    handleLocationError(true, infoWindow, map.getCenter());
+                }
+            );
+        } else {
+            // Browser doesn't support Geolocation
+            handleLocationError(false, infoWindow, map.getCenter());
         }
-      );
-    } else {
-      // Browser doesn't support Geolocation
-      handleLocationError(false, infoWindow, map.getCenter());
-    }
-
+        
 		//Creates a marker and an info-window for each marker
 		for (var i=0; i < pins.length; i++) {
 			//Makes location
@@ -334,92 +346,89 @@
 			if (pins[i].type == "plant" || pins[i].type == "supply") {
 				contentString =
 			    '<div class="content">' +
-			    '<div id="siteNotice">' +
-			    "</div>" +
-				    '<h1 id="firstHeading" class="firstHeading">' + pins[i].store + '</h1>' +
+				    '<h2 id="firstHeading" class="firstHeading"> Store: ' + pins[i].store + '</h2>' +
 				    '<div id="bodyContent">' +
-				    "<p> Item Puchased: " + pins[i].item + "</p>" +
+				    "<p> Item Purchased: " + pins[i].item + "</p>" +
 				    "<p> Price: " + pins[i].price + "</p>" +
 				    "<p> Notes: " + pins[i].notes + "</p>" +
 				    "<p>" + pins[i].address + "</p>" +
-			    "</div>" +
+			        "</div>" +
 			    "</div>";
 			}
 			if (pins[i].type == "wild") {
 				contentString =
 			    '<div class="content">' +
-			    '<div id="siteNotice">' +
-			    "</div>" +
-				    '<h1 id="firstHeading" class="firstHeading">' + "Wild Plant Found!" + '</h1>' +
+				    '<h2 id="firstHeading" class="firstHeading">' + "Wild Plant Found!" + '</h2>' +
 				    '<div id="bodyContent">' +
 				    "<p> Description: " + pins[i].notes + "</p>" +
 				    "<p>" + pins[i].address + "</p>"+
 			    "</div>" +
 			    "</div>";
 			}
-		  const infowindow = new google.maps.InfoWindow({
-		    content: contentString,
-		  });
-			marker.addListener("click", () => {
-		    infowindow.open(map, marker);
-		  });
+            const infowindow = new google.maps.InfoWindow({
+                content: contentString,
+            });
+            marker.addListener("click", () => {
+                infowindow.open(map, marker);
+            });
 		}
 	}
 
 	function onSubmit(){
-		if (!validate()){
-		    return false;
-		}
-
-		//Get variables
-		var streetNum = $('input[name="streetNum"]').val();
-		var street = $('input[name="street"]').val();
-		var city = $('input[name="city"]').val();
-		var state = $('input[name="state"]').val();
-		var country = $('input[name="country"]').val();
-
-		var store = $('input[name="store"]').val();
-		var item = $('input[name="plantType"]').val();
-		var price = $('input[name="price"]').val();
-		var notes = $('input[name="notes"]').val();
+        latLong();
+        return validate();
+	}
+    
+    function latLong() {
+        var allowed = false;
+        // alert("inside lat long");
+        
+        //Get variables
+        var streetNum = $('input[name="streetNum"]').val();
+        var street = $('input[name="street"]').val();
+        var city = $('input[name="city"]').val();
+        var state = $('input[name="state"]').val();
+        var country = $('input[name="country"]').val();
 
 		//Make string for geocode API
 		var address = streetNum + "%" + street + "%" + city + "%" + state + "%" + country;
-
-		//Assign type of pin based on radio check
-		if ($('#PlantPurchase').is(":checked")) {
-			var type = "plant";
-		}
-		if ($('#SuppliesPurchase').is(":checked")) {
-			var type = "supply";
-		}
-		if ($('#WildPlant').is(":checked")) {
-			var type = "wild";
-			var notes = $('input[name="wildDescrip"]').val();
-		}
-
-		//Convert location to latitude and longitude variables
-		//XMLHTTPRequest
-		var latitude;
-		var longitude;
-    var req = new XMLHttpRequest();
-    //When the readystate changes
-    req.onreadystatechange = function() {
-    	//If its succesful
-        if (this.readyState == 4 && this.status == 200) {
-            strObj = JSON.stringify(this.responseText);
-            parseObj = JSON.parse(this.responseText);
-            latitude = parseObj.results[0].geometry.location.lat;
-            longitude = parseObj.results[0].geometry.location.lng;
-
-        //Create a new object with the variables
-  			var pin = new Pin(type, latitude, longitude, store, item, price, notes);
-  			console.log("SDf", pin);
-        }
-    }
+        // alert("address" + address);
+        
+        //Convert location to latitude and longitude variables
+        // XMLHTTPRequest
+        $("#latitude").val("42.373611");
+        $("#longitude").val("-71.110558");
+        
+        var latitude;
+        var longitude;
+        // var req = new XMLHttpRequest();
+        // alert("before onreadystate");
+        
+        //When the readystate changes
+        // req.onreadystatechange = function() {
+        //     // alert("inside onreadystate");
+        //     //If its successful
+        //     if (this.readyState == 4 && this.status == 200) {
+        //         strObj = JSON.stringify(this.responseText);
+        //         parseObj = JSON.parse(this.responseText);
+        //         latitude = parseObj.results[0].geometry.location.lat;
+        //         longitude = parseObj.results[0].geometry.location.lng;
+        //         // alert("inside: " + latitude + " and " + longitude);
+        //         $("#latitude").val(latitude);
+        //         $("#latitude").val(longitude);
+        //         allowed = true;
+        //     }
+        // }
+        // // alert("outside onreadystate");
+        // 
+        // //Create and send request
+        // req.open("GET", "https://maps.googleapis.com/maps/api/geocode/json?address=" + address + "&key=AIzaSyDbHeyWVPYGmWmoF4uv2E5tVaMQeCZ86cA", true);
+        // req.send();
+        // return allowed;
+    // }
     //Create and send request
-    req.open("GET", "https://maps.googleapis.com/maps/api/geocode/json?address=" + address + "&key=AIzaSyDbHeyWVPYGmWmoF4uv2E5tVaMQeCZ86cA", true);
-    req.send();
+    // req.open("GET", "https://maps.googleapis.com/maps/api/geocode/json?address=" + address + "&key=AIzaSyDbHeyWVPYGmWmoF4uv2E5tVaMQeCZ86cA", true);
+    // req.send();
 	}
 
 function validate() {
@@ -469,8 +478,7 @@ function validate() {
 </head>
 
 <body>
-	<!-- need this for the navigation -->
-	<a href="index.html" class="logoLink"><img src="https://photos.smugmug.com/Plarent/n-8RTWkq/i-NNBZ2WP/0/b59e3896/M/i-NNBZ2WP-M.png" class="logo"/></a>
+	<!-- <a href="index.html" class="logoLink"><img src="https://photos.smugmug.com/Plarent/n-8RTWkq/i-NNBZ2WP/0/b59e3896/M/i-NNBZ2WP-M.png" class="logo"/></a>
 	<div id="myNav" class="overlay">
 		<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
 		<div class="overlay-content">
@@ -481,11 +489,11 @@ function validate() {
 		</div>
 	</div>
 	<span style="font-size:50px;cursor:pointer" onclick="openNav()">&#9776</span>
-	<!-- need this for the navigation -->
 
 	<h1 style="text-align: center">Search for Nearby Resources!</h1><br><br><br>
-	<div id="map"></div>
-	<div id=flexbox>
+	<div id="map"></div> -->
+    
+    <div id=flexbox>
 		<p class="key"><img src= "http://maps.google.com/mapfiles/kml/shapes/sunny.png">Bought a Plant Here! </p><br>
 		<p class="key"><img src= "http://maps.google.com/mapfiles/kml/shapes/shopping.png">Bought Supplies Here! </p><br>
 		<p class="key"><img src= "http://maps.google.com/mapfiles/kml/shapes/parks.png">Saw a Cool Wild Plant Here! </p><br>
@@ -524,7 +532,10 @@ function validate() {
 						<p id="notes"><label>Notes: </label><textarea placeholder="ex... Great condition, friendly service!" id="notesText" type="text"  name='notes' /></textarea></p>
 						<p id="wildDescrip">Description: <textarea type="text" id="wd"  name='wildDescrip' /></textarea></p>
 					</div><br>
-					<input type="submit" id="submit" type = "button" value = "Submit" />
+                    <input type="text" name="latitude" id="latitude" value="42.373611">
+                    <input type="text" name="longitude" id="longitude" value="-71.110558">
+                    <input type="submit" id="submit" type = "button" value = "Submit"/><br>
+
 				</div>
 			</form>
 		</div>
@@ -583,14 +594,10 @@ function validate() {
 			$("#price").hide();
 			$("#notes").hide();
 		});
-
 	</script>
 
-	<!-- Async script executes immediately and must be after any DOM elements used in callback. -->
-	<script
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDbHeyWVPYGmWmoF4uv2E5tVaMQeCZ86cA&callback=initMap&libraries=&v=weekly"
-    	async
-  ></script>
+    <!-- <script src='https://maps.googleapis.com/maps/api/js?key=AIzaSyDbHeyWVPYGmWmoF4uv2E5tVaMQeCZ86cA&callback=initMap&libraries=&v=weekly' async></script> -->
+
 
 	<!-- need this for the navigation and footer -->
 	<script>
