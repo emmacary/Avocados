@@ -8,18 +8,17 @@
 <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
 <style>
 	body {
-		background-image: url('https://photos.smugmug.com/photos/i-z8ghppZ/0/72e0936f/M/i-z8ghppZ-M.png');
-		background-size: 100vh;
-		background-repeat: no-repeat;
-     	background-position: right top;
-     	background-color: #ffa185;
+		background-image: url('vines.png'), url('vines.png');
+        background-position: left top, right top;
+        background-repeat: no-repeat, no-repeat;
+        background-color: #ffa185;
 	}
     h2 {
         font-size: 20px;
     }
     .content {
-    
-    	float: left;
+
+    	float: center;
     }
     .resizedTextbox {
         height:200px;
@@ -27,9 +26,11 @@
         font-size:14pt;
     }
     .Bcolor{
-        background-color: #cce8d4;
-        padding: 20px 30px;
-        border-radius: 10%
+		background-color: #386b3f;
+		padding: 30px;
+		padding-top: 20px;
+		border-radius: 25px;
+		display: inline-block;
     }
     .contactinfo{
         font-size: 200%;
@@ -88,6 +89,10 @@
 	  display: inline-block;
 	  top: 0;
 	  float: left;
+	}
+
+	.photo{
+		width: 50px;
 	}
 
 	/* menu bar */
@@ -170,7 +175,7 @@
 	</div>
 	<span style="font-size:50px;cursor:pointer" onclick="openNav()">&#9776</span>
 	<!-- need this for the navigation -->
-	
+
 	<div class="content">
     	<div class="info">
             <h1 class="head"> Contact Us!</h1>
@@ -183,16 +188,17 @@
 			          <input type="text" id="email" name="email" style="width:300px; margin-left:44px;"><br><br>
 			          <label for="lname" style="vertical-align: top;">Message</label>
 			          <textarea type="text" cols="40" rows="5" id="emailinfo" name="emailinfo"  class="resizedTextbox"></textarea><br>
-			          <button type="submit" id="opener" onclick="onSubmit()">Send</button>        
+			          <button type="submit" id="opener" onclick="onSubmit()">Send</button>
 			    </div>
 			</form>
 		</div>
 	    <div class="contactinfo">
-		    <a href="tel:+1234567891"><br><br>Call Us </a>  &nbsp; &nbsp;
-	          Follow our
-	        <a href = "https://www.instagram.com/kyliejenner/" target="_blank">Instagram</a>
-	        &nbsp; &nbsp;  Retweet us at our
-	        <a href = "https://www.twitter.com/kyliejenner/" target="_blank">Twitter</a>
+			<br>
+		    <a href="tel:+1234567891"><img style="width:50px;" src="phone.png"></a>
+			&nbsp; &nbsp; &nbsp; &nbsp;
+	        <a href = "https://www.instagram.com/kyliejenner/" target="_blank"><img style="width:50px;" src="insta.png"></a>
+	        &nbsp; &nbsp; &nbsp; &nbsp;
+	        <a href = "https://www.twitter.com/kyliejenner/" target="_blank"><img style="width:50px;" src="twitter.png"></a>
 	    </div>
 	</div>
 
@@ -236,9 +242,7 @@
       document.getElementById("myNav").style.height = "0%";
     }
     </script>
-         
-    <div class="footer">PLAreNT, 2021. Designed by the Avocados.</div>     
+
     <!-- need this for the navigation and footer -->
 </body>
 </html>
-
