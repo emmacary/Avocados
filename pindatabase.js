@@ -10,7 +10,7 @@ var port = process.env.PORT || 3000;
 //var port = 8080; //localhost
 
 http.createServer(function (req, res) {
-    if (req.url == "/index.html")
+    if (req.url == "/index.html" || req.url == "/")
     {
         file = 'index.html';
         fs.readFile(file, function(err, txt) {
