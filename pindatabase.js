@@ -38,7 +38,7 @@ http.createServer(function (req, res) {
             header_s += 	"</div>";
             header_s += "</div>";
             header_s += "<span style='font-size:50px;cursor:pointer' onclick='openNav()'>&#9776</span>";
-            header_s += "<h1 style='text-align: center; font-size: 200%;'>Search for Nearby Resources!</h1><br><br><br>";
+            header_s += "<h1 style='text-align: center; font-size: 400%;'>Search for Nearby Resources!</h1><br><br><br>";
             header_s += "<div id='map'></div>";
             res.write(header_s);
 
