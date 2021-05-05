@@ -55,15 +55,7 @@ http.createServer(function (req, res) {
                 this.address = address;
         	}
 
-        	// Create an array of pin objects from database
-        	var pins = [];
-        	var niche = new Pin("PlantPurchase", 42.4085175, -71.1122302, "niche", "daisy", "$12", "great", "78 Icecream Rd. Somerville, MA, USA");
-        	var boston = new Pin("SuppliesPurchase", 42.3602534, -71.0582912, "btown", "city", "$300", null, "1 City Hall Square #500, MA, USA");
-        	var wild = new Pin("WildPlant", 42.395819, -71.1222902, "niche", "daisy", "$12", "red and blue", "260 Elm St #106, Somerville, MA 02144");
-        	pins.push(niche);
-        	pins.push(boston);
-        	pins.push(wild);
-
+        	var pins = [];  // Create an array of pin objects from database
             /* Connect to Mongo */
             MongoClient.connect(url_S, { useUnifiedTopology: true }, function(err, db) {
                 if(err) { console.log("Connection err: " + err); return; }
