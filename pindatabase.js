@@ -66,8 +66,11 @@ http.createServer(function (req, res) {
                 console.log("before find");
                 var s = coll.find().stream();
                 s.on("data", function(item) {
-                    if(item.type=="PlantPurchase") {var supplyItem = item.PlantType;}
-                    else {var supplyItem = item.supplyItem;}
+                    if (item.type == "PlantPurchase") { 
+                        var supplyItem = item.plantType;
+                    } else {
+                        var supplyItem = item.supplyItem;
+                    }
                     var type = item.type;
                     var store = item.store;
                     var price = item.price;
