@@ -375,57 +375,8 @@
 	// }
 
 	function onSubmit(){
-        // latLong();
         return validate();
 	}
-    
-    // function latLong() {
-    //     var allowed = false;
-        // alert("inside lat long");
-        
-        //Get variables
-        // var streetNum = $('input[name="streetNum"]').val();
-        // var street = $('input[name="street"]').val();
-        // var city = $('input[name="city"]').val();
-        // var state = $('input[name="state"]').val();
-        // var country = $('input[name="country"]').val();
-
-		//Make string for geocode API
-		// var address = streetNum + "%" + street + "%" + city + "%" + state + "%" + country;
-        // alert("address" + address);
-        
-        //Convert location to latitude and longitude variables
-        // XMLHTTPRequest
-        // $("#latitude").val("42.373611");
-        // $("#longitude").val("-71.110558");
-        
-        // var latitude;
-        // var longitude;
-        // var req = new XMLHttpRequest();
-        // alert("before onreadystate");
-        
-        //When the readystate changes
-        // req.onreadystatechange = function() {
-        //     // alert("inside onreadystate");
-        //     //If its successful
-        //     if (this.readyState == 4 && this.status == 200) {
-        //         strObj = JSON.stringify(this.responseText);
-        //         parseObj = JSON.parse(this.responseText);
-        //         latitude = parseObj.results[0].geometry.location.lat;
-        //         longitude = parseObj.results[0].geometry.location.lng;
-        //         // alert("inside: " + latitude + " and " + longitude);
-        //         $("#latitude").val(latitude);
-        //         $("#latitude").val(longitude);
-        //         allowed = true;
-        //     }
-        // }
-        // // alert("outside onreadystate");
-        // 
-        // //Create and send request
-        // req.open("GET", "https://maps.googleapis.com/maps/api/geocode/json?address=" + address + "&key=AIzaSyDbHeyWVPYGmWmoF4uv2E5tVaMQeCZ86cA", true);
-        // req.send();
-        // return allowed;
-	// }
 
 function validate() {
 	var pass = false;
