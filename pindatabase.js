@@ -96,11 +96,6 @@ http.createServer(function (req, res) {
                     map_s +=        "center: boston1,";
                     map_s +=        "zoom: 12,";
                     map_s +=    "});";
-                    //Putting a pin on Boston
-                    map_s +=    "const marker = new google.maps.Marker({";
-                    map_s +=        "position: boston1,";
-                    map_s +=        "map: map,";
-                    map_s +=    "});";
                     
                     //Recenter map if user allows location
                     map_s +=    "if (navigator.geolocation) {";
