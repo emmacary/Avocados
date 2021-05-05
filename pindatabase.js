@@ -59,7 +59,7 @@ http.createServer(function (req, res) {
         	var pins = [];
         	var niche = new Pin("PlantPurchase", 42.4085175, -71.1122302, "niche", "daisy", "$12", "great", "78 Icecream Rd. Somerville, MA, USA");
         	var boston = new Pin("SuppliesPurchase", 42.3602534, -71.0582912, "btown", "city", "$300", null, "1 City Hall Square #500, MA, USA");
-        	var wild = new Pin("WildPlant", 42.395819, -71.1222902, "niche", "daisy", "$12", "red and blue");
+        	var wild = new Pin("WildPlant", 42.395819, -71.1222902, "niche", "daisy", "$12", "red and blue", "260 Elm St #106, Somerville, MA 02144");
         	pins.push(niche);
         	pins.push(boston);
         	pins.push(wild);
@@ -81,35 +81,15 @@ http.createServer(function (req, res) {
                     var notes = item.notes;
                     var wildDescrip = item.wildDescrip;
                     var address = item.streetNum + " " + item.street + ", " + item.city + ", " + item.state + ", " + item.country;
+                    var latitude = item.latitude;
+                    var longitude = item.longitude;
 
-                    /* Use Node Geocoder module to get lat and long from address */
-                    const options = {
-                        provider: 'google',
-                        apiKey: 'AIzaSyDbHeyWVPYGmWmoF4uv2E5tVaMQeCZ86cA',
-                    };
-                    //still trying to figure this async stuff out ://
-                    const geocoder = NodeGeocoder(options);
-                    geocoder.geocode(address)
-                       .then((res)=> {
-                           //this stuff is coming AFTER we use the pin array  
-                           latitude = res[0].latitude;
-                           longitude = res[0].longitude;
-                           console.log(latitude);
-                           console.log(longitude)
-                       })
-                       .catch((err)=> {
-                           console.log(err);
-                       });
-                       
-                   latitude = 42.373611; //hard coding cambridge latitude longitude
-                   longitude = -71.110558;
-                   if (wildDescrip != "") notes = wildDescrip;
-                   var newpin = new Pin(type, latitude, longitude, store, supplyItem, price, notes, address);
-                   // console.log(newpin);
-                   pins.push(newpin);
+                    if (wildDescrip != "") notes = wildDescrip;
+                    var newpin = new Pin(type, latitude, longitude, store, supplyItem, price, notes, address);
+                    pins.push(newpin);
                 });
                 s.on("end", function() {
-                    console.log(pins);
+                    // console.log("pin array", pins);
                     var pinarray_string = JSON.stringify(pins);
 
                     /* Displaying Google map */
@@ -224,32 +204,45 @@ http.createServer(function (req, res) {
         req.on('data', data => {
             pdata += data.toString();
         });
-
         // when complete POST data is received
         req.on('end', () => {
         	pdata = qs.parse(pdata);
-            console.log(pdata);
+            address = pdata["streetNum"] + pdata["street"] + pdata["city"] + pdata["state"];
 
-            MongoClient.connect(url_S, { useUnifiedTopology: true }, function(err, db) {
-                if(err) { console.log("Connection err: " + err); return; }
+            /* Use Node Geocoder module to get lat and long from address */
+            const options = {
+                provider: 'google',
+                apiKey: 'AIzaSyDbHeyWVPYGmWmoF4uv2E5tVaMQeCZ86cA',
+            };
+            const geocoder = NodeGeocoder(options);
+            geocoder.geocode(address)
+               .then((response)=> {
+                   MongoClient.connect(url_S, { useUnifiedTopology: true }, function(err, db) {
+                       if(err) { console.log("Connection err: " + err); return; }
 
-                var dbo = db.db("plarent");
-            	var coll = dbo.collection('pins');
+                       var dbo = db.db("plarent");
+                   	   var coll = dbo.collection('pins');
 
-                coll.insertOne(pdata, function(err, res) {
-                    if (err) { console.log("query err: " + err); return; }
-                    console.log("new document inserted");
-                })
-            	console.log("Success!");
+                       pdata["latitude"] = response[0].latitude;
+                       pdata["longitude"] = response[0].longitude;
+                       
+                       coll.insertOne(pdata, function(err, res) {
+                           if (err) { console.log("query err: " + err); return; }
+                           console.log("new document inserted");
+                       })
+                   	   console.log("Success!");
 
-                file = 'redirect.html';
-                fs.readFile(file, function(err, txt) {
-                    res.writeHead(200, {'Content-Type': 'text/html'});
-                    res.write(txt);
-                    res.end();
-                });
-            });  //end connect
-
+                       file = 'redirect.html';
+                       fs.readFile(file, function(err, txt) {
+                           res.writeHead(200, {'Content-Type': 'text/html'});
+                           res.write(txt);
+                           res.end();
+                       });
+                   });  //end connect
+               })
+               .catch((err)=> {
+                   console.log(err);
+               });
         });
     }
     else if(req.url == "/plantdata.html") {
